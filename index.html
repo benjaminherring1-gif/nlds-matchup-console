@@ -1,0 +1,920 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta property="og:title" content="NLDS matchup book: Braves vs Dodgers">
+<meta property="og:description" content="Every likely starter against every projected hitter, built from 2026 Statcast.">
+<title>NLDS matchup book: Braves vs Dodgers</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+  --paper:#EEF2F1; --panel:#FFFFFF; --panel-2:#F6F8F8; --ink:#14212D; --ink-2:#4B5A68; --ink-3:#7A8894;
+  --line:#CDD6DB; --line-2:#E3E8EB;
+  --atl:#CE1141; --atl-2:#13274F; --lad:#005A9C;
+  --attack:#0B7A64; --attack-soft:#D5EEE7; --danger:#B42318; --danger-soft:#F8DEDA;
+  --warn:#9A6400; --warn-soft:#FBEFD5;
+  --focus:#2563EB;
+  --display:"Barlow Condensed","Arial Narrow","Roboto Condensed",system-ui,sans-serif;
+  --body:"Barlow","Segoe UI",system-ui,-apple-system,sans-serif;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --paper:#0E1620; --panel:#16212C; --panel-2:#1B2834; --ink:#E7EDF2; --ink-2:#A8B7C4; --ink-3:#7F909E;
+    --line:#2B3B49; --line-2:#22303C; --atl:#FF4D6D; --atl-2:#9DB3E0; --lad:#5AA9FF;
+    --attack:#2FC4A0; --attack-soft:#123A33; --danger:#FF6B5A; --danger-soft:#3A1E1C; --warn:#F2B23C; --warn-soft:#3A2E14; --focus:#7AA7FF;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0E1620; --panel:#16212C; --panel-2:#1B2834; --ink:#E7EDF2; --ink-2:#A8B7C4; --ink-3:#7F909E;
+  --line:#2B3B49; --line-2:#22303C; --atl:#FF4D6D; --atl-2:#9DB3E0; --lad:#5AA9FF;
+  --attack:#2FC4A0; --attack-soft:#123A33; --danger:#FF6B5A; --danger-soft:#3A1E1C; --warn:#F2B23C; --warn-soft:#3A2E14; --focus:#7AA7FF;
+}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px);height:100%}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.5;font-variant-numeric:tabular-nums;-webkit-font-smoothing:antialiased}
+button{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--focus);outline-offset:2px;border-radius:6px}
+a{color:var(--lad)}
+h1,h2,h3,h4{font-family:var(--display);font-weight:700;line-height:1.1;margin:0;letter-spacing:.005em}
+p{margin:0}
+.wrap{max-width:1320px;margin:0 auto;padding:0 20px}
+
+/* Header */
+.top{background:var(--panel);border-bottom:1px solid var(--line);position:sticky;top:env(safe-area-inset-top,0px);z-index:20}
+.top .wrap{display:flex;align-items:center;gap:24px;min-height:64px;flex-wrap:wrap;padding-top:10px;padding-bottom:10px}
+.brand{display:flex;flex-direction:column;gap:2px;margin-right:auto}
+.brand h1{font-size:28px}
+.brand p{font-size:14px;color:var(--ink-2)}
+.tabs{display:flex;gap:4px;background:var(--panel-2);border:1px solid var(--line);border-radius:10px;padding:4px}
+.tabs button{border:0;background:transparent;padding:8px 14px;border-radius:7px;font-weight:600;font-size:15px;cursor:pointer;color:var(--ink-2)}
+.tabs button[aria-selected="true"]{background:var(--panel);color:var(--ink);box-shadow:0 1px 0 var(--line),0 0 0 1px var(--line)}
+main{padding:20px 0 48px}
+section[hidden]{display:none!important}
+
+/* Rotation strip */
+.rotation{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
+.rot-group{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:10px 12px}
+.rot-group h2{font-size:17px;color:var(--ink-2);font-weight:600;margin-bottom:8px;display:flex;align-items:center;gap:8px}
+.team-dot{width:10px;height:10px;border-radius:50%;display:inline-block;flex:none}
+.rot-list{display:flex;gap:8px;flex-wrap:wrap}
+.pbtn{border:1px solid var(--line);background:var(--panel-2);border-radius:9px;padding:7px 12px 7px 10px;cursor:pointer;text-align:left;display:flex;flex-direction:column;min-width:128px;border-left:4px solid var(--tc)}
+.pbtn .n{font-family:var(--display);font-weight:700;font-size:19px;line-height:1.1}
+.pbtn .s{font-size:13px;color:var(--ink-2)}
+.pbtn[aria-pressed="true"]{background:var(--panel);border-color:var(--tc);box-shadow:0 0 0 2px var(--tc) inset}
+
+/* Lab layout */
+.lab-grid{display:grid;grid-template-columns:300px minmax(0,1fr);gap:16px;align-items:start}
+.lineup{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px;position:sticky;top:calc(84px + env(safe-area-inset-top,0px))}
+.lineup h2{font-size:21px;margin-bottom:2px}
+.lineup .sub{font-size:13px;color:var(--ink-2);margin-bottom:10px}
+.lineup ol{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:4px}
+.hbtn{width:100%;display:grid;grid-template-columns:22px 1fr auto;align-items:center;gap:8px;border:1px solid transparent;background:transparent;border-radius:8px;padding:7px 8px;cursor:pointer;text-align:left}
+.hbtn:hover{background:var(--panel-2)}
+.hbtn[aria-pressed="true"]{background:var(--panel-2);border-color:var(--line)}
+.hbtn .slot{font-family:var(--display);font-weight:700;color:var(--ink-3);font-size:18px;text-align:center}
+.hbtn .nm{font-weight:600;line-height:1.2}
+.hbtn .nm small{display:block;font-weight:400;color:var(--ink-2);font-size:12.5px}
+.chip{display:inline-flex;align-items:center;gap:4px;font-size:12px;font-weight:600;padding:2px 8px;border-radius:999px;white-space:nowrap;border:1px solid transparent}
+.e-p2{background:var(--attack);color:var(--panel)}
+.e-p1{background:var(--attack-soft);color:var(--attack);border-color:var(--attack)}
+.e-0{background:var(--panel-2);color:var(--ink-2);border-color:var(--line)}
+.e-h1{background:var(--danger-soft);color:var(--danger);border-color:var(--danger)}
+.e-h2{background:var(--danger);color:var(--panel)}
+.lineup .legend{margin-top:12px;font-size:12.5px;color:var(--ink-2);line-height:1.45}
+
+/* Sheet */
+.sheet{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px 22px 24px;min-width:0}
+.sheet-head{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:16px;align-items:end;padding-bottom:16px;border-bottom:1px solid var(--line-2)}
+.duel{font-family:var(--display);font-weight:700;font-size:38px;line-height:1.02}
+.duel .vs{font-weight:500;color:var(--ink-3);font-size:26px;padding:0 6px}
+.duel .pn{color:var(--pc)} .duel .hn{color:var(--hc)}
+.meta-row{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.tag{font-size:12.5px;padding:3px 9px;border-radius:6px;background:var(--panel-2);border:1px solid var(--line);color:var(--ink-2)}
+.tag.warn{background:var(--warn-soft);border-color:var(--warn);color:var(--warn)}
+.edge-box{min-width:300px}
+.edge-label{font-family:var(--display);font-weight:700;font-size:24px;line-height:1}
+.edge-sub{font-size:13px;color:var(--ink-2);margin-top:2px}
+.conf{font-size:12.5px;font-weight:600}
+.plan{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:18px 0}
+.plan-item{border:1px solid var(--line);border-radius:10px;padding:12px;background:var(--panel-2);min-width:0}
+.plan-item h3{font-size:16px;color:var(--ink-2);font-weight:600;margin-bottom:6px}
+.plan-item .pitch{font-family:var(--display);font-weight:700;font-size:22px;display:flex;align-items:center;gap:8px;line-height:1.1}
+.plan-item p{font-size:14px;color:var(--ink-2);margin-top:4px}
+.pdot{width:12px;height:12px;border-radius:50%;flex:none;display:inline-block}
+.viz{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:16px}
+.viz2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px;margin-top:16px}
+figure{margin:0;border:1px solid var(--line);border-radius:12px;padding:14px;background:var(--panel);min-width:0}
+figure h3{font-size:19px;margin-bottom:2px}
+figcaption,.cap{font-size:13px;color:var(--ink-2);line-height:1.45}
+.fig-top{margin-bottom:8px}
+svg{display:block;max-width:100%;height:auto}
+svg text{font-family:var(--body)}
+.legend-row{display:flex;gap:14px;flex-wrap:wrap;align-items:center;font-size:12.5px;color:var(--ink-2);margin-top:8px}
+.sw{display:inline-block;width:14px;height:14px;border-radius:3px;vertical-align:-2px;margin-right:5px;border:1px solid var(--line)}
+.tablewrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th{font-weight:600;color:var(--ink-2);text-align:right;padding:6px 8px;border-bottom:1px solid var(--line);white-space:nowrap;font-size:12.5px}
+td{padding:7px 8px;border-bottom:1px solid var(--line-2);text-align:right;white-space:nowrap}
+th:first-child,td:first-child{text-align:left}
+td.pc{display:flex;align-items:center;gap:7px;font-weight:600}
+.na{color:var(--ink-3)}
+.scorebar{display:inline-block;width:90px;height:10px;background:var(--panel-2);border:1px solid var(--line);border-radius:3px;position:relative;vertical-align:middle}
+.scorebar i{position:absolute;top:-1px;bottom:-1px;border-radius:2px}
+.scorebar b{position:absolute;left:50%;top:-3px;bottom:-3px;width:1px;background:var(--ink-3)}
+.why{margin-top:18px}
+.why h3{font-size:20px;margin-bottom:8px}
+.why ul{margin:0;padding-left:20px;display:grid;gap:6px}
+.why li{font-size:14.5px;max-width:80ch}
+.src{font-size:12px;color:var(--ink-3)}
+.mix-row{display:grid;grid-template-columns:96px 1fr 70px;gap:8px;align-items:center;font-size:13.5px;margin:6px 0}
+.mix-bars{display:flex;flex-direction:column;gap:3px}
+.mix-bars span{display:block;height:9px;border-radius:2px}
+.mix-n{text-align:right;color:var(--ink-2);font-size:12.5px;line-height:1.25}
+.flip{border:1px solid var(--line);background:var(--panel-2);border-radius:8px;padding:6px 12px;font-weight:600;cursor:pointer;font-size:14px}
+.flip:hover{border-color:var(--ink-3)}
+
+/* Cards */
+.filters{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-bottom:16px}
+.seg{display:flex;gap:3px;background:var(--panel);border:1px solid var(--line);border-radius:9px;padding:3px}
+.seg button{border:0;background:transparent;border-radius:6px;padding:6px 12px;font-weight:600;font-size:14px;cursor:pointer;color:var(--ink-2)}
+.seg button[aria-pressed="true"]{background:var(--panel-2);color:var(--ink);box-shadow:0 0 0 1px var(--line)}
+.count{font-size:14px;color:var(--ink-2)}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px}
+.card{border:1px solid var(--line);background:var(--panel);border-radius:12px;padding:0;cursor:pointer;text-align:left;overflow:hidden;display:flex;flex-direction:column}
+.card:hover{border-color:var(--ink-3)}
+.card .band{height:6px;background:var(--tc)}
+.card .body{padding:12px 14px 14px;display:flex;flex-direction:column;gap:8px;flex:1}
+.card .who{display:flex;justify-content:space-between;gap:8px;align-items:baseline}
+.card .who b{font-family:var(--display);font-size:24px;line-height:1.05}
+.card .who span{font-size:13px;color:var(--ink-2);white-space:nowrap}
+.card .hook{font-size:14px;color:var(--ink-2);line-height:1.4}
+.kv{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:auto}
+.kv div{background:var(--panel-2);border-radius:7px;padding:6px 8px}
+.kv small{display:block;font-size:11.5px;color:var(--ink-2)}
+.kv strong{font-family:var(--display);font-size:20px;font-weight:700;line-height:1.1}
+
+/* Dialog */
+dialog{border:0;padding:0;border-radius:16px;max-width:980px;width:calc(100% - 32px);max-height:calc(100% - 32px);background:var(--panel);color:var(--ink);box-shadow:0 30px 80px rgba(0,0,0,.35)}
+dialog::backdrop{background:rgba(8,14,20,.55)}
+.dlg-head{position:sticky;top:0;background:var(--panel);border-bottom:1px solid var(--line);padding:16px 20px;display:flex;gap:12px;align-items:flex-start;z-index:2}
+.dlg-head h2{font-size:34px}
+.dlg-head .sub{font-size:14px;color:var(--ink-2);margin-top:2px}
+.dlg-head .acts{margin-left:auto;display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+.btn{border:1px solid var(--line);background:var(--panel-2);border-radius:8px;padding:7px 12px;font-weight:600;cursor:pointer;font-size:14px}
+.btn.primary{background:var(--ink);color:var(--panel);border-color:var(--ink)}
+.dlg-body{padding:18px 20px 24px;display:grid;gap:16px}
+.stats{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:8px}
+.stat{border:1px solid var(--line-2);background:var(--panel-2);border-radius:9px;padding:8px 10px}
+.stat small{display:block;font-size:12px;color:var(--ink-2)}
+.stat strong{font-family:var(--display);font-size:23px;line-height:1.1}
+.two{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px}
+.says{margin:0;padding-left:20px;display:grid;gap:7px}
+.says li{max-width:78ch}
+.bar-row{display:grid;grid-template-columns:120px 1fr 64px;gap:10px;align-items:center;font-size:13.5px;margin:7px 0}
+.track{height:12px;background:var(--panel-2);border:1px solid var(--line-2);border-radius:3px;position:relative}
+.track i{position:absolute;left:0;top:0;bottom:0;border-radius:2px}
+.track b{position:absolute;top:-4px;bottom:-4px;width:2px;background:var(--ink-3)}
+.bar-row .v{text-align:right;color:var(--ink-2);font-size:12.5px}
+
+/* Method */
+.method{max-width:820px}
+.method h2{font-size:30px;margin:6px 0 10px}
+.method h3{font-size:22px;margin:22px 0 8px}
+.method p,.method li{max-width:76ch}
+.method p+p{margin-top:10px}
+.method ul,.method ol{padding-left:22px;display:grid;gap:6px}
+.method .box{border:1px solid var(--line);background:var(--panel);border-radius:12px;padding:16px 18px;margin-top:12px}
+
+@media (max-width:1080px){
+  .lab-grid{grid-template-columns:1fr}
+  .lineup{position:static}
+  .lineup ol{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr))}
+  .plan{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .viz,.viz2{grid-template-columns:1fr}
+}
+@media (max-width:720px){
+  .wrap{padding:0 12px}
+  .rotation{grid-template-columns:1fr}
+  .brand h1{font-size:23px}
+  .duel{font-size:30px}
+  .sheet{padding:14px}
+  .sheet-head{grid-template-columns:1fr}
+  .edge-box{min-width:0}
+  .plan{grid-template-columns:1fr}
+  .two{grid-template-columns:1fr}
+  .tabs{width:100%}
+  .tabs button{flex:1;padding:8px 6px}
+  dialog{width:100%;max-width:100%;max-height:100%;height:100%;border-radius:0}
+  .dlg-head{flex-wrap:wrap}
+  .dlg-head .acts{margin-left:0}
+  .pbtn{min-width:0;flex:1 1 140px}
+  .top{position:static}
+}
+@media (prefers-reduced-motion:no-preference){
+  .sheet.swap{animation:fadein .22s ease-out}
+  @keyframes fadein{from{opacity:.35}to{opacity:1}}
+}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <div class="brand">
+      <h1>NLDS matchup book</h1>
+      <p>Braves vs Dodgers. Every likely starter against every projected hitter, built from 2026 Statcast.</p>
+    </div>
+    <nav class="tabs" role="tablist" aria-label="Views">
+      <button role="tab" id="t-lab" aria-controls="lab" aria-selected="true">Matchup lab</button>
+      <button role="tab" id="t-cards" aria-controls="cards" aria-selected="false">Battle cards</button>
+      <button role="tab" id="t-method" aria-controls="method" aria-selected="false">How it works</button>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <section id="lab" role="tabpanel" aria-labelledby="t-lab">
+    <div class="rotation" id="rotation"></div>
+    <div class="lab-grid">
+      <aside class="lineup" id="lineup" aria-label="Opposing lineup"></aside>
+      <article class="sheet" id="sheet" aria-live="polite"></article>
+    </div>
+  </section>
+
+  <section id="cards" role="tabpanel" aria-labelledby="t-cards" hidden>
+    <div class="filters">
+      <div class="seg" role="group" aria-label="Team filter" id="f-team">
+        <button aria-pressed="true" data-v="all">Both teams</button>
+        <button aria-pressed="false" data-v="ATL">Braves</button>
+        <button aria-pressed="false" data-v="LAD">Dodgers</button>
+      </div>
+      <div class="seg" role="group" aria-label="Role filter" id="f-role">
+        <button aria-pressed="true" data-v="all">Everyone</button>
+        <button aria-pressed="false" data-v="P">Pitchers</button>
+        <button aria-pressed="false" data-v="H">Hitters</button>
+      </div>
+      <span class="count" id="count"></span>
+    </div>
+    <div class="cards" id="cardgrid"></div>
+  </section>
+
+  <section id="method" role="tabpanel" aria-labelledby="t-method" hidden>
+    <div class="method" id="methodbody"></div>
+  </section>
+</main>
+
+<dialog id="dlg" aria-labelledby="dlg-title"></dialog>
+
+<script>
+/* ===================== DATA (2026 regular season, Baseball Savant unless noted) ===================== */
+const PITCH = {
+  FF:{name:"Four-seam",cls:"FB",color:"#D22D49"},
+  SI:{name:"Sinker",cls:"FB",color:"#FE9D00"},
+  FC:{name:"Cutter",cls:"FB",color:"#933F2C"},
+  SL:{name:"Slider",cls:"BR",color:"#C3BD0E"},
+  CU:{name:"Curveball",cls:"BR",color:"#00D1ED"},
+  CH:{name:"Changeup",cls:"OS",color:"#1DBE3A"},
+  FS:{name:"Splitter",cls:"OS",color:"#3BACAC"}
+};
+const TEAM = {ATL:{name:"Braves",color:"var(--atl)"},LAD:{name:"Dodgers",color:"var(--lad)"}};
+const MLB = {chase:30.5,whiff:25.1,zcon:83.9,barrel:7.7,hh:38.6,xw:.314,k:22.1,bb:8.9,ev:88.8,la:13.9};
+
+const PITCHERS = [
+ {id:"sale",name:"Chris Sale",team:"ATL",hand:"L",
+  line:{era:2.16,xera:2.97,ip:"162.2",k:30.9,bb:4.8,whiff:30.4,chase:36.5,hh:35.1,barrel:6.2,gb:44.5},
+  splits:{L:.595,R:.570},
+  pct:[["xERA",89],["Whiff",85],["Chase",96],["K%",94],["BB%",97],["Fastball velo",75]],
+  ars:[
+   {t:"FF",use:41.4,mph:96.1,ivb:9.9,hb:14.6,spin:93,rv:13,rv100:1.2,ba:.217,slg:.362,xw:.299,wh:27.5,hh:45.2,pa:258,up:true},
+   {t:"SL",use:39.9,mph:79.8,ivb:-4.2,hb:-12.5,spin:66,rv:13,rv100:1.3,ba:.186,slg:.247,xw:.215,wh:38.2,hh:20.9,pa:268},
+   {t:"CH",use:10.3,mph:88.5,ivb:-0.2,hb:16.4,spin:99,rv:4,rv100:1.4,ba:.284,slg:.343,xw:.331,wh:30.3,hh:43.1,pa:68},
+   {t:"SI",use:8.4,mph:95.6,ivb:2.5,hb:18.0,spin:91,rv:5,rv100:2.3,ba:.265,slg:.286,xw:.292,wh:10.6,hh:30.4,pa:53}],
+  hook:"Slider is the engine; low-slot heater touched 100 this year.",
+  says:[
+   "The slider carries him: .186 BA, .247 SLG and a 38% whiff rate on 1,027 pitches.",
+   "Four-seam averages 96.1 mph, up 1.3 mph from 2025. It plays from a low slot with flat approach (9.9\" induced rise, 14.6\" arm-side run), but it is the pitch that gets hit hard (45% hard-hit).",
+   "Changeup is the weakest offering (.331 xwOBA, 43% hard-hit). Use it sparingly and only below the zone.",
+   "Elite command: 4.8% walks (97th pct) and a 36.5% chase rate (96th pct).",
+   "Workload flag: started the Wild Card opener Sept 29 and got four outs in relief Oct 1. He has a 1.98 ERA in 23 starts since he last pitched on normal rest."],
+  vsOpp:["Aug 27 vs LAD: 9 IP, 5 H, 0 R, 0 BB, 11 K (complete-game shutout).","May 8 at LAD: 7 IP, 3 R (2 ER), 7 K."],
+  src:"https://baseballsavant.mlb.com/savant-player/chris-sale-519242"},
+ {id:"mahle",name:"Tyler Mahle",team:"ATL",hand:"R",
+  line:{era:3.99,xera:3.95,ip:"149.0",k:22.3,bb:7.5,whiff:22.9,chase:28.9,hh:37.1,barrel:6.8,gb:44.4},
+  splits:{L:.644,R:.788},
+  pct:[["xERA",56],["Whiff",31],["Chase",31],["K%",49],["BB%",64],["Fastball velo",23]],
+  ars:[
+   {t:"FF",use:48.3,mph:92.8,ivb:17.4,hb:11.3,spin:100,rv:10,rv100:0.8,ba:.211,slg:.418,xw:.290,wh:22.4,hh:38.7,pa:240,up:true},
+   {t:"FS",use:29.7,mph:86.3,ivb:4.5,hb:13.4,spin:91,rv:1,rv100:0.1,ba:.242,slg:.354,xw:.302,wh:26.2,hh:33.7,pa:238},
+   {t:"FC",use:14.9,mph:87.8,ivb:10.1,hb:0.1,spin:60,rv:0,rv100:0.0,ba:.317,slg:.439,xw:.319,wh:15.0,hh:40.5,pa:93},
+   {t:"SL",use:6.4,mph:85.0,ivb:1.6,hb:-5.2,spin:28,rv:-6,rv100:-3.9,ba:.324,slg:.514,xw:.397,wh:23.2,hh:38.7,pa:41}],
+  hook:"Reverse-split right-hander. The splitter neutralizes lefties.",
+  says:[
+   "Reverse platoon: .644 OPS allowed to lefties, .788 to righties. The splitter (13.4\" arm-side fade) is why.",
+   "Four-seam has real ride (17.4\" induced vertical break). Elevate it.",
+   "Slider is a liability (-6 run value, .514 SLG). The cutter is fringe (.439 SLG).",
+   "First inning is his worst: .910 OPS allowed, 5.33 ERA.",
+   "1.99 ERA in 9 starts since joining Atlanta (5.13 with San Francisco)."],
+  vsOpp:["Apr 22 vs LAD (with SF): 7 IP, 3 H, 0 R, 2 BB, 5 K."],
+  src:"https://baseballsavant.mlb.com/savant-player/tyler-mahle-641816"},
+ {id:"holmes",name:"Grant Holmes",team:"ATL",hand:"R",
+  line:{era:3.44,xera:5.05,ip:"151.2",k:17.9,bb:9.7,whiff:27.3,chase:31.8,hh:45.2,barrel:8.9,gb:43.7},
+  splits:{L:.683,R:.753},
+  pct:[["xERA",12],["Whiff",66],["Chase",63],["K%",17],["BB%",34],["Hard-hit",3]],
+  ars:[
+   {t:"SL",use:36.2,mph:85.4,ivb:-2.8,hb:-1.9,spin:24,rv:6,rv100:0.8,ba:.211,slg:.355,xw:.306,wh:40.3,hh:41.6,pa:251},
+   {t:"FF",use:28.3,mph:94.2,ivb:15.4,hb:7.2,spin:85,rv:-2,rv100:-0.3,ba:.260,slg:.480,xw:.383,wh:15.6,hh:47.8,pa:178,up:true},
+   {t:"SI",use:12.5,mph:93.2,ivb:8.0,hb:14.2,spin:76,rv:2,rv100:0.5,ba:.262,slg:.393,xw:.400,wh:13.6,hh:62.9,pa:68},
+   {t:"FC",use:8.1,mph:92.1,ivb:11.9,hb:1.1,spin:64,rv:-2,rv100:-1.2,ba:.349,slg:.605,xw:.414,wh:15.1,hh:34.9,pa:51},
+   {t:"CU",use:7.7,mph:82.9,ivb:-7.8,hb:-2.4,spin:44,rv:-1,rv100:-0.6,ba:.245,slg:.340,xw:.289,wh:34.0,hh:41.7,pa:54},
+   {t:"CH",use:7.3,mph:89.3,ivb:2.6,hb:14.1,spin:88,rv:1,rv100:0.7,ba:.143,slg:.171,xw:.264,wh:26.3,hh:35.5,pa:39}],
+  hook:"ERA outran the contact. One trip through, slider-first.",
+  says:[
+   "The 3.44 ERA overstates him: 5.05 xERA (12th pct), 45.2% hard-hit (3rd pct), 8.9% barrels.",
+   "Slider is the only plus pitch (40.3% whiff). Four-seam (.519 xSLG) and cutter (.605 SLG) get punished.",
+   "Better vs lefties (.683 OPS) than righties (.753).",
+   "Opponent OPS jumps to .853 in the 4th inning. Plan for one trip through the order.",
+   "Changeup results are excellent (.171 SLG) but on only 39 PA."],
+  vsOpp:["Mar 31, 2025 at LAD: 4 IP, 4 R.","May 2, 2025 vs LAD: struck out Ohtani, Betts and Freeman in the 1st inning."],
+  src:"https://baseballsavant.mlb.com/savant-player/grant-holmes-656550"},
+ {id:"yamamoto",name:"Yoshinobu Yamamoto",team:"LAD",hand:"R",
+  line:{era:2.53,xera:2.94,ip:"185.0",k:25.7,bb:5.9,whiff:27.9,chase:33.9,hh:35.5,barrel:6.5,gb:48.6},
+  splits:{L:.511,R:.586},
+  pct:[["xERA",90],["Whiff",70],["Chase",83],["K%",71],["BB%",90],["Fastball velo",74]],
+  ars:[
+   {t:"FS",use:26.6,mph:91.5,ivb:1.8,hb:11.8,spin:80,rv:9,rv100:1.2,ba:.158,slg:.271,xw:.208,wh:33.8,hh:32.9,pa:210},
+   {t:"FF",use:26.2,mph:96.1,ivb:16.1,hb:8.3,spin:93,rv:15,rv100:2.1,ba:.159,slg:.355,xw:.331,wh:29.1,hh:48.9,pa:155,up:true},
+   {t:"FC",use:14.9,mph:91.6,ivb:8.2,hb:-3.1,spin:47,rv:4,rv100:1.0,ba:.236,slg:.360,xw:.303,wh:23.6,hh:26.4,pa:102},
+   {t:"CU",use:13.2,mph:76.9,ivb:-16.0,hb:-12.5,spin:94,rv:5,rv100:1.3,ba:.217,slg:.319,xw:.289,wh:26.0,hh:24.5,pa:73},
+   {t:"SI",use:13.1,mph:95.5,ivb:11.6,hb:14.5,spin:86,rv:8,rv100:2.2,ba:.178,slg:.287,xw:.256,wh:13.9,hh:43.1,pa:110},
+   {t:"SL",use:6.1,mph:86.9,ivb:1.9,hb:-5.5,spin:35,rv:3,rv100:1.9,ba:.204,slg:.278,xw:.229,wh:35.7,hh:31.7,pa:56}],
+  hook:"Six pitches, no obvious hole. Better against lefties.",
+  says:[
+   "Elite run prevention: 2.53 ERA, .182 BA allowed, 5.9% walks (90th pct).",
+   "Splitter is the signature: .158 BA, .271 SLG, 33.8% whiff.",
+   "Better vs lefties (.511 OPS) than righties (.586). That is bad news for a lefty-heavy Atlanta lineup.",
+   "The soft spot: four-seam results (.355 SLG) are flattered. Expected slugging is .465 with 48.9% hard-hit.",
+   "First inning is his worst (.655 OPS, 3.54 ERA). The second inning is near-perfect (.192 OPS)."],
+  vsOpp:["Aug 27 at ATL: 6.1 IP, 4 H, 1 R, 1 BB, 8 K (the run was Baldwin's leadoff homer)."],
+  src:"https://baseballsavant.mlb.com/savant-player/yoshinobu-yamamoto-808967"},
+ {id:"skubal",name:"Tarik Skubal",team:"LAD",hand:"L",
+  line:{era:2.72,xera:2.94,ip:"158.2",k:30.0,bb:4.4,whiff:31.7,chase:36.6,hh:34.8,barrel:6.7,gb:45.0},
+  splits:{L:.706,R:.566},
+  pct:[["xERA",90],["Whiff",90],["Chase",97],["K%",91],["BB%",99],["Fastball velo",85]],
+  ars:[
+   {t:"FF",use:38.0,mph:96.8,ivb:17.1,hb:3.2,spin:91,rv:12,rv100:1.3,ba:.218,slg:.370,xw:.276,wh:26.1,hh:40.0,pa:231,up:true},
+   {t:"CH",use:25.6,mph:87.7,ivb:4.8,hb:13.7,spin:73,rv:6,rv100:1.0,ba:.192,slg:.308,xw:.231,wh:46.9,hh:28.4,pa:178},
+   {t:"SI",use:17.5,mph:96.7,ivb:12.3,hb:13.2,spin:85,rv:4,rv100:0.8,ba:.270,slg:.337,xw:.309,wh:18.5,hh:34.3,pa:101},
+   {t:"SL",use:13.9,mph:89.7,ivb:4.0,hb:-3.2,spin:28,rv:5,rv100:1.5,ba:.240,slg:.373,xw:.275,wh:28.8,hh:35.0,pa:79},
+   {t:"CU",use:5.0,mph:80.4,ivb:-5.1,hb:-8.7,spin:54,rv:0,rv100:-0.4,ba:.138,slg:.276,xw:.225,wh:38.8,hh:26.7,pa:31}],
+  hook:"Changeup kills righties. Lefties have hit him this year.",
+  says:[
+   "Two-time Cy Young winner with 97th-pct chase and 99th-pct walk rate.",
+   "Changeup (46.9% whiff) is a right-hander weapon. Lefties see four-seam, sinker and slider instead.",
+   "Lefties have done more damage: .706 OPS in 144 batters faced vs .566 for righties. Small sample, but it cuts against the usual lefty-on-lefty assumption.",
+   "Changeup run value fell from +25 (2025) to +6, and four-seam velocity is down 0.6 mph to 96.8.",
+   "Missed time with elbow loose bodies (May) and was on the bereavement list Sept 20 to 23."],
+  vsOpp:["Apr 29 at ATL (with DET): 7 IP, 5 H, 2 R, 0 BB, 7 K."],
+  src:"https://baseballsavant.mlb.com/savant-player/tarik-skubal-669373"},
+ {id:"snell",name:"Blake Snell",team:"LAD",hand:"L",
+  line:{era:1.90,xera:2.17,ip:"42.2",k:31.8,bb:9.2,whiff:34.8,chase:40.0,hh:15.8,barrel:2.0,gb:43.6},
+  splits:{L:.583,R:.503},
+  pct:[],
+  ars:[
+   {t:"FF",use:49.5,mph:96.0,ivb:18.7,hb:5.5,spin:96,rv:7,rv100:2.0,ba:.179,slg:.224,xw:.231,wh:23.0,hh:6.8,pa:81,up:true},
+   {t:"CU",use:21.9,mph:79.9,ivb:-8.7,hb:-13.7,spin:66,rv:3,rv100:2.1,ba:.111,slg:.139,xw:.165,wh:43.1,hh:29.4,pa:39},
+   {t:"CH",use:17.8,mph:84.8,ivb:8.4,hb:13.1,spin:97,rv:1,rv100:1.0,ba:.333,slg:.424,xw:.296,wh:44.7,hh:20.7,pa:35},
+   {t:"SL",use:10.8,mph:88.8,ivb:7.2,hb:-3.7,spin:53,rv:-1,rv100:-0.8,ba:.235,slg:.235,xw:.221,wh:52.5,hh:18.2,pa:18}],
+  hook:"Untouchable in a small sample. Walks are the crack.",
+  says:[
+   "Small sample: 42.2 IP over 9 starts after elbow loose-body surgery. Treat every number here with caution.",
+   "Dominant when on: 1.90 ERA, 2.17 xERA, 15.8% hard-hit, 0 home runs allowed.",
+   "Lives off the plate: 41% zone rate and 40% chase. The curveball has allowed a .111 BA with 43% whiffs.",
+   "Walks are the crack: 9.2% overall, and 8 walks in 53 batters faced vs lefties.",
+   "Left groin tightness cut his Sept 16 start to one inning."],
+  vsOpp:["May 9 vs ATL (before the injury): 3 IP, 6 H, 5 R (4 ER), 2 BB, 5 K."],
+  src:"https://baseballsavant.mlb.com/savant-player/blake-snell-605483"},
+ {id:"glasnow",name:"Tyler Glasnow",team:"LAD",hand:"R",
+  line:{era:3.53,xera:2.88,ip:"74.0",k:34.0,bb:8.7,whiff:32.1,chase:29.5,hh:38.4,barrel:8.5,gb:41.5},
+  splits:{L:.565,R:.528},
+  pct:[["xERA",92],["Whiff",92],["Chase",38],["K%",97],["BB%",47],["Extension",99]],
+  ars:[
+   {t:"FF",use:34.7,mph:95.5,ivb:16.0,hb:0.6,spin:76,rv:2,rv100:0.5,ba:.244,slg:.453,xw:.325,wh:17.7,hh:45.5,pa:95,up:true},
+   {t:"CU",use:26.3,mph:81.3,ivb:-15.8,hb:-6.2,spin:85,rv:2,rv100:0.6,ba:.119,slg:.238,xw:.178,wh:53.2,hh:41.9,pa:92},
+   {t:"SI",use:21.3,mph:95.8,ivb:14.3,hb:10.8,spin:74,rv:5,rv100:2.2,ba:.152,slg:.239,xw:.322,wh:23.1,hh:31.6,pa:57},
+   {t:"SL",use:17.7,mph:89.9,ivb:2.2,hb:-4.2,spin:27,rv:6,rv100:3.0,ba:.171,slg:.195,xw:.228,wh:39.6,hh:27.6,pa:43}],
+  hook:"Breaking balls win. Fastball and walks are the risk.",
+  says:[
+   "A breaking-ball pitcher now: knuckle curve (53% whiff, .119 BA) and slider (.171 BA, .195 SLG).",
+   "Four-seam is hittable (.453 SLG, 45.5% hard-hit) despite 94th-pct spin. It cuts (0.6\" arm-side run), so it does not ride away from lefties.",
+   "Command has slipped: 19 walks in 44.1 IP vs lefties, and 11 walks with a 5.24 ERA in 22.1 September innings.",
+   "99th-pct extension makes 95.5 mph play up."],
+  vsOpp:["Aug 25 at ATL: 5 IP, 6 H, 3 R, 0 BB, 7 K."],
+  src:"https://baseballsavant.mlb.com/savant-player/tyler-glasnow-607192"}
+];
+
+/* Hitter stance S = switch. rv = Savant run value by pitch type (positive = hitter did damage). */
+const HITTERS = [
+ {id:"ohtani",name:"Shohei Ohtani",team:"LAD",bats:"L",pos:"DH",
+  l:{pa:618,avg:.275,obp:.377,slg:.512,hr:30,xw:.397,barrel:16.4,hh:52.1,ev:93.3,la:12.3,k:24.6,bb:13.1,chase:30.0,whiff:31.7,zcon:77.2,pull:47.9,fp:36.7,zsw:66.0},
+  bat:{speed:74.7,attack:13},split:{L:.881,R:.893},
+  rv:{FF:{rv:0,slg:.422,xw:.379,wh:27.4,pa:179},SI:{rv:9,slg:.809,xw:.533,wh:21.7,pa:81},SL:{rv:0,slg:.385,xw:.341,wh:39.4,pa:77},CU:{rv:-3,slg:.240,xw:.335,wh:38.5,pa:57},CH:{rv:7,slg:.526,xw:.389,wh:40.1,pa:84},FC:{rv:4,slg:.775,xw:.524,wh:25.0,pa:48},FS:{rv:1,slg:.444,xw:.260,wh:34.1,pa:20}},
+  flag:"Back from biceps/knee IL Sept 23. .566 OPS in September, .772 after the break.",
+  hook:"Still the most dangerous bat in the series. Curveballs are the soft spot.",
+  says:[".397 xwOBA and 16.4% barrels even in a down year (.889 OPS).","Crushes sinkers (.809 SLG) and cutters (.775 SLG). Never feed him either.","Weakest vs curveballs: .180 BA, .240 SLG, -3 run value.","No platoon split (.881 vs LHP, .893 vs RHP).","1.020 OPS in the first inning. He is most dangerous leading off a game.","Career vs Chris Sale: 3-for-11 with 3 K."],
+  src:"https://baseballsavant.mlb.com/savant-player/shohei-ohtani-660271",depth:"full"},
+ {id:"betts",name:"Mookie Betts",team:"LAD",bats:"R",pos:"SS",
+  l:{pa:528,avg:.257,obp:.326,slg:.454,hr:23,xw:.339,barrel:7.8,hh:38.0,ev:90.2,la:17.9,k:11.0,bb:8.9,chase:20.3,whiff:12.5,zcon:94.8,pull:40.1,fp:20.9,zsw:61.5},
+  flag:"Hottest Dodger: 1.112 OPS in September.",
+  hook:"Best bat-to-ball on either roster. You will not strike him out often.",
+  says:["94.8% zone contact and a 12.5% whiff rate. Both are the best of the 18 hitters here.","11% strikeout rate. Plan for weak contact, not swing-and-miss.","Very patient early: 20.9% first-pitch swing rate. Steal strike one.","1.112 OPS in September. Leads off against left-handers."],
+  src:"https://baseballsavant.mlb.com/team/119",depth:"std"},
+ {id:"freeman",name:"Freddie Freeman",team:"LAD",bats:"L",pos:"1B",
+  l:{pa:657,avg:.288,obp:.362,slg:.430,hr:16,xw:.363,barrel:8.1,hh:41.3,ev:89.5,la:12.2,k:17.7,bb:10.0,chase:29.3,whiff:23.2,zcon:82.7,pull:33.4,fp:32.5,zsw:73.3},
+  flag:"Right patellar tendinitis. Hit .184 and slugged .224 in September.",
+  hook:"Season line says dangerous. The knee says attack him.",
+  says:["Season xwOBA .363, but the power left in July: .355 SLG since then and one extra-base hit in September.","Manager Dave Roberts said the knee changed his mechanics.","Aggressive in the zone (73.3% zone swing, 87.5% swing rate on meatballs). Velocity in the zone is the test.","Has homered off Chris Sale twice (2016 and May 8, 2026)."],
+  src:"https://baseballsavant.mlb.com/team/119",depth:"std"},
+ {id:"wsmith",name:"Will Smith",team:"LAD",bats:"R",pos:"C",
+  l:{pa:276,avg:.260,obp:.355,slg:.426,hr:10,xw:.389,barrel:12.4,hh:41.2,ev:89.1,la:20.1,k:16.3,bb:12.3,chase:20.9,whiff:16.7,zcon:87.9,pull:29.9,fp:21.0,zsw:62.9},
+  hook:"Quietly the best expected hitter in their lineup after Ohtani.",
+  says:["Only 276 PA, but a .389 xwOBA with 12.4% barrels.","Disciplined: 20.9% chase and 16.7% whiff.","Fly-ball swing (20.1° average launch angle, 40% fly balls). Keep the ball down or well above the zone."],
+  src:"https://baseballsavant.mlb.com/team/119",depth:"std"},
+ {id:"tucker",name:"Kyle Tucker",team:"LAD",bats:"L",pos:"RF",
+  l:{pa:627,avg:.233,obp:.330,slg:.385,hr:17,xw:.331,barrel:6.4,hh:36.3,ev:88.5,la:18.1,k:16.7,bb:12.4,chase:23.9,whiff:20.8,zcon:86.0,pull:42.0,fp:41.2,zsw:74.3},
+  flag:".195 AVG at home this year. .890 OPS in September.",
+  hook:"Disciplined but lifting the ball weakly. Ride fastballs over his barrel.",
+  says:["Career-low .715 OPS, but disciplined (23.9% chase) with solid contact (86% zone contact).","Weak results come from soft lift: 34.2% of contact is hit under the ball, with only 6.4% barrels.","Swings early (41.2% first-pitch swing). Start him with movement.",".890 OPS in September. Hit .195 at Dodger Stadium."],
+  src:"https://baseballsavant.mlb.com/team/119",depth:"std"},
+ {id:"teoscar",name:"Teoscar Hernández",team:"LAD",bats:"R",pos:"LF",
+  l:{pa:491,avg:.267,obp:.334,slg:.425,hr:16,xw:.332,barrel:10.7,hh:44.8,ev:90.3,la:13.9,k:27.5,bb:8.6,chase:31.2,whiff:32.6,zcon:77.0,pull:34.5,fp:27.3,zsw:67.1},
+  flag:".965 OPS in September.",
+  hook:"Most strikeout-prone regular in LA's lineup. Spin him.",
+  says:["32.6% whiff rate and 77% zone contact: the most swing-and-miss in the Dodgers lineup.","Real power when he connects (10.7% barrels, 44.8% hard-hit).",".965 OPS in September. Don't feed him fastballs in the zone."],
+  src:"https://baseballsavant.mlb.com/team/119",depth:"std"},
+ {id:"muncy",name:"Max Muncy",team:"LAD",bats:"L",pos:"3B",
+  l:{pa:561,avg:.252,obp:.348,slg:.490,hr:29,xw:.349,barrel:12.9,hh:45.8,ev:89.9,la:17.5,k:25.0,bb:11.6,chase:25.8,whiff:29.2,zcon:81.0,pull:51.3,fp:23.6,zsw:65.7},
+  hook:"Dead-pull lefty power. Nothing middle-in.",
+  says:["29 HR, 12.9% barrels, 51.3% pull rate.","29.2% whiff rate. Chase and in-zone misses are both available.","Patient (23.6% first-pitch swing): get ahead with strike one."],
+  src:"https://baseballsavant.mlb.com/team/119",depth:"std"},
+ {id:"pages",name:"Andy Pages",team:"LAD",bats:"R",pos:"CF",
+  l:{pa:574,avg:.274,obp:.343,slg:.468,hr:23,xw:.343,barrel:7.9,hh:42.3,ev:88.9,la:15.7,k:19.7,bb:8.5,chase:31.6,whiff:22.1,zcon:88.9,pull:37.6,fp:31.4,zsw:65.9},
+  hook:"Solid everywhere. Expand him with breaking balls away.",
+  says:[".343 xwOBA with 88.9% zone contact.","Chases at an average-plus rate (31.6%). Breaking balls off the plate are the path to outs."],
+  src:"https://baseballsavant.mlb.com/team/119",depth:"std"},
+ {id:"edman",name:"Tommy Edman",team:"LAD",bats:"S",pos:"2B",
+  l:{pa:331,avg:.247,obp:.329,slg:.385,hr:8,xw:.303,barrel:5.3,hh:32.0,ev:87.3,la:13.1,k:20.2,bb:6.6,chase:30.4,whiff:23.0,zcon:91.0,pull:42.1,fp:29.0,zsw:64.5},
+  hook:"Contact without impact. Throw strikes.",
+  says:["91% zone contact but only 5.3% barrels and a .303 xwOBA.","Groundball-leaning (45.6%). Pitch to contact and avoid free passes."],
+  src:"https://baseballsavant.mlb.com/team/119",depth:"std"},
+
+ {id:"baldwin",name:"Drake Baldwin",team:"ATL",bats:"L",pos:"C",
+  l:{pa:615,avg:.284,obp:.358,slg:.459,hr:25,xw:.370,barrel:12.9,hh:50.6,ev:91.5,la:11.0,k:21.5,bb:8.9,chase:34.4,whiff:24.4,zcon:83.7,pull:30.8,fp:37.0,zsw:70.5},
+  splitAvg:{L:.243,R:.298},
+  flag:"2-for-13 in the Wild Card Series.",
+  hook:"Atlanta's best expected hitter. Hits right-handers much harder.",
+  says:["Best xwOBA in Atlanta's lineup (.370) with 50.6% hard-hit.","All-fields approach: only 30.8% pull.","Platoon gap: .298 AVG vs RHP, .243 vs LHP (FanGraphs, through mid-September).","Chases 34.4%. Expand late in counts.","Led off Aug 27 with a homer off Yamamoto."],
+  src:"https://baseballsavant.mlb.com/team/144",depth:"platoon"},
+ {id:"acuna",name:"Ronald Acuña Jr.",team:"ATL",bats:"R",pos:"RF",
+  l:{pa:469,avg:.255,obp:.345,slg:.451,hr:20,xw:.366,barrel:13.0,hh:43.5,ev:89.6,la:15.7,k:22.0,bb:11.3,chase:28.6,whiff:29.0,zcon:77.7,pull:37.0,fp:43.3,zsw:75.6},
+  flag:"Two hamstring IL stints. 1-for-9 in the Wild Card Series.",
+  hook:"Power intact, contact shaky in the zone. He swings early.",
+  says:["13.0% barrels and a .366 xwOBA.","Very aggressive: 43.3% first-pitch swing and 75.6% zone swing.","77.7% zone contact: you can get in-zone whiffs.","Small sample: 1.158 OPS vs curveballs on 19 PA (FanGraphs). Low confidence."],
+  src:"https://baseballsavant.mlb.com/team/144",depth:"std"},
+ {id:"olson",name:"Matt Olson",team:"ATL",bats:"L",pos:"1B",
+  l:{pa:698,avg:.251,obp:.321,slg:.502,hr:41,xw:.351,barrel:14.2,hh:52.0,ev:92.5,la:18.1,k:24.5,bb:9.2,chase:27.9,whiff:25.4,zcon:80.8,pull:37.8,fp:29.4,zsw:66.8},
+  bat:{speed:74.8,attack:10},split:{L:.824,R:.823},
+  rv:{FF:{rv:-2,slg:.476,xw:.365,wh:25.2,pa:213},SI:{rv:4,slg:.524,xw:.388,wh:17.8,pa:118},SL:{rv:10,slg:.633,xw:.339,wh:36.1,pa:82},CH:{rv:6,slg:.542,xw:.356,wh:22.8,pa:65},FC:{rv:6,slg:.618,xw:.397,wh:22.4,pa:63},CU:{rv:-3,slg:.315,xw:.221,wh:26.6,pa:57},FS:{rv:1,slg:.400,xw:.289,wh:36.6,pa:17}},
+  flag:".633 OPS in September, but homered in Wild Card Game 3.",
+  hook:"41 homers, no platoon split. Curveballs and elevated heat.",
+  says:["41 HR with 14.2% barrels and 52% hard-hit. No platoon split (.824 vs LHP, .823 vs RHP).","Crushes sliders (+10 run value, .633 SLG), cutters (.618) and changeups (.542).","Weakest vs curveballs (.221 xwOBA) and the four-seamer (-2 run value, 25% whiff).","Uppercut path (10° attack angle, 18.1° launch angle): high-ride fastballs above the zone play.",".633 OPS in September."],
+  src:"https://baseballsavant.mlb.com/savant-player/matt-olson-621566",depth:"full"},
+ {id:"harris",name:"Michael Harris II",team:"ATL",bats:"L",pos:"CF",
+  l:{pa:621,avg:.294,obp:.321,slg:.491,hr:26,xw:.342,barrel:10.3,hh:47.6,ev:90.5,la:10.0,k:19.2,bb:3.7,chase:45.1,whiff:24.6,zcon:88.8,pull:35.6,fp:39.5,zsw:69.9},
+  bat:{speed:74.9,attack:7},split:{L:.780,R:.830},
+  rv:{FF:{rv:3,slg:.518,xw:.385,wh:20.8,pa:125},SI:{rv:-2,slg:.404,xw:.349,wh:13.7,pa:122},SL:{rv:4,slg:.539,xw:.336,wh:28.2,pa:91},CH:{rv:1,slg:.413,xw:.312,wh:31.0,pa:77},CU:{rv:-4,slg:.294,xw:.201,wh:37.4,pa:53},FC:{rv:-1,slg:.450,xw:.367,wh:19.8,pa:42},FS:{rv:2,slg:.750,xw:.413,wh:32.1,pa:24}},
+  flag:"5-for-11 in the Wild Card Series.",
+  hook:"Hits everything in the zone and chases everything outside it.",
+  says:[".294 hitter with 47.6% hard-hit, but a 45.1% chase rate (1st pct) and 3.7% walks.","Curveball is the clear hole: .157 BA, 37.4% whiff, 45.3% K rate (-4 run value).","Handles fastballs: +3 run value and .518 SLG on four-seamers.","Flat swing path (7° attack angle). He is better on pitches at the belt and below than on elevated ride.","Mild platoon split: .780 vs LHP, .830 vs RHP."],
+  src:"https://baseballsavant.mlb.com/savant-player/michael-harris-ii-671739",depth:"full"},
+ {id:"dubon",name:"Mauricio Dubón",team:"ATL",bats:"R",pos:"SS",
+  l:{pa:619,avg:.276,obp:.321,slg:.399,hr:12,xw:.304,barrel:4.0,hh:29.4,ev:86.5,la:16.1,k:11.8,bb:5.7,chase:37.6,whiff:15.3,zcon:89.9,pull:31.2,fp:34.6,zsw:72.5},
+  hook:"Puts the ball in play. Rarely hurts you.",
+  says:["Contact-first: 15.3% whiff, 89.9% zone contact, 11.8% strikeouts.","Little damage: 4% barrels, 29.4% hard-hit, .304 xwOBA.","Chases 37.6%. Expand, but the real goal is avoiding walks."],
+  src:"https://baseballsavant.mlb.com/team/144",depth:"std"},
+ {id:"albies",name:"Ozzie Albies",team:"ATL",bats:"S",pos:"2B",
+  l:{pa:683,avg:.237,obp:.293,slg:.392,hr:22,xw:.273,barrel:3.8,hh:27.7,ev:87.1,la:17.8,k:15.4,bb:6.7,chase:38.1,whiff:21.2,zcon:86.2,pull:45.8,fp:39.6,zsw:78.7},
+  flag:"Homered in Wild Card Game 3.",
+  hook:"Swings at everything. Weak contact, pull-side lift.",
+  says:["Swing-happy: 78.7% zone swing and 38.1% chase.","Weak contact quality: .273 xwOBA, 3.8% barrels, 27.7% hard-hit.","Pull-side fly balls (45.8% pull, 36.8% hit under the ball). Elevated fastballs produce lazy flies.","Switch-hitter. Platoon split not pulled for this build."],
+  src:"https://baseballsavant.mlb.com/team/144",depth:"std"},
+ {id:"riley",name:"Austin Riley",team:"ATL",bats:"R",pos:"3B",
+  l:{pa:630,avg:.219,obp:.290,slg:.364,hr:19,xw:.299,barrel:12.4,hh:44.3,ev:91.3,la:18.5,k:31.9,bb:7.6,chase:32.3,whiff:31.9,zcon:78.8,pull:39.5,fp:28.6,zsw:68.6},
+  hook:"201 strikeouts. Damage only comes on mistakes.",
+  says:["Down year: .219/.290/.364 with 201 strikeouts (31.9%).","31.9% whiff and 78.8% zone contact.","Still dangerous on contact (12.4% barrels, 44.3% hard-hit). The risk is a mistake over the plate, not contact in general."],
+  src:"https://baseballsavant.mlb.com/team/144",depth:"std"},
+ {id:"yaz",name:"Mike Yastrzemski",team:"ATL",bats:"L",pos:"LF",
+  l:{pa:408,avg:.224,obp:.309,slg:.380,hr:12,xw:.309,barrel:6.8,hh:43.0,ev:90.4,la:16.2,k:24.0,bb:10.0,chase:26.4,whiff:23.2,zcon:84.4,pull:44.5,fp:20.3,zsw:59.5},
+  hook:"Takes strikes. Get ahead early.",
+  says:["Passive: 59.5% zone swing and 20.3% first-pitch swing.",".309 xwOBA with pull-side air power (44.5% pull)."],
+  src:"https://baseballsavant.mlb.com/team/144",depth:"std"},
+ {id:"dsmith",name:"Dominic Smith",team:"ATL",bats:"L",pos:"DH",
+  l:{pa:300,avg:.253,obp:.311,slg:.383,hr:9,xw:.301,barrel:5.8,hh:32.6,ev:87.8,la:13.3,k:16.0,bb:7.7,chase:31.0,whiff:21.5,zcon:86.8,pull:36.1,fp:34.1,zsw:67.3},
+  hook:"Contact over impact. A low-risk out.",
+  says:["86.8% zone contact but 5.8% barrels and a .301 xwOBA.","Used at DH against right-handers."],
+  src:"https://baseballsavant.mlb.com/team/144",depth:"std"}
+];
+
+const ORDER = {
+  LAD:{R:["ohtani","betts","freeman","wsmith","tucker","teoscar","muncy","pages","edman"],
+       L:["betts","ohtani","freeman","wsmith","teoscar","tucker","muncy","pages","edman"]},
+  ATL:{R:["baldwin","acuna","olson","harris","dubon","albies","riley","yaz","dsmith"],
+       L:["baldwin","acuna","olson","harris","dubon","albies","riley","yaz","dsmith"]}
+};
+
+/* Curated, sourced matchup notes. ov = small judgment adjustments by pitch (documented in How it works). */
+const NOTES = {
+  "sale|ohtani":{ov:{FF:4},notes:["Career: Ohtani is 3-for-11 with 3 K against Sale (.697 OPS). Tiny sample, used only as a tiebreaker.","Aug 27: Sale struck him out twice, once with a 100.1 mph four-seamer."]},
+  "sale|freeman":{notes:["Freeman has homered off Sale twice (2016 and May 8, 2026). Keep the four-seamer off the middle."]},
+  "holmes|ohtani":{notes:["May 2, 2025: Holmes struck out Ohtani, Betts and Freeman in the 1st inning, finishing with a 95 mph four-seamer."]},
+  "holmes|betts":{notes:["May 2, 2025: struck out Betts in the 1st inning."]},
+  "holmes|freeman":{notes:["May 2, 2025: struck out Freeman in the 1st inning on a 95 mph four-seamer."]},
+  "yamamoto|baldwin":{notes:["Aug 27: Baldwin led off the game with a homer off Yamamoto, the only run in a 1-0 Braves win."]}
+};
+const FLAGS_ADJ = { freeman:{FF:4}, ohtani:{} }; /* Freeman: attack with velocity while the knee limits his power (judgment). */
+
+/* ===================== HELPERS ===================== */
+const $ = s=>document.querySelector(s);
+const byId = id=>PITCHERS.find(p=>p.id===id)||HITTERS.find(h=>h.id===id);
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+const f3=v=>v==null?"–":(v<1?v.toFixed(3).replace(/^0/,""):v.toFixed(3));
+const f1=v=>v==null?"–":(+v).toFixed(1);
+const pct=v=>v==null?"–":(+v).toFixed(1)+"%";
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const opp=t=>t==="ATL"?"LAD":"ATL";
+const stanceOf=(H,P)=>H.bats==="S"?(P.hand==="R"?"L":"R"):H.bats;
+const handWord=h=>h==="L"?"left-handed":"right-handed";
+const ops=H=>H.l.obp+H.l.slg;
+const inkOn=hex=>{const n=parseInt(hex.slice(1),16),r=n>>16&255,g=n>>8&255,b=n&255;return (0.299*r+0.587*g+0.114*b)>150?"#111":"#fff";};
+
+/* ===================== MATCHUP ENGINE ===================== */
+const PLATOON = { /* by pitch: [opposite-handed hitter, same-handed hitter] */
+  FF:[0,0], SI:[-3,3], FC:[3,0], SL:[-3,7], CU:[2,2], CH:[7,-11], FS:[7,-6]
+};
+function pitchScore(P,p,H,same){
+  const parts=[];
+  let q=(0.320-p.xw)*130 + (p.wh-25)*0.45 + clamp(p.rv100,-4,4)*2.5;
+  if(p.pa<40) q*=p.pa/40;
+  parts.push({k:"quality",v:q,t:`${P.name.split(" ").pop()}'s ${PITCH[p.t].name.toLowerCase()}: ${f3(p.xw)} xwOBA, ${p.wh.toFixed(1)}% whiff, ${p.rv>0?"+":""}${p.rv} run value (${p.pa} PA)`});
+  const pl=PLATOON[p.t][same?1:0];
+  if(pl) parts.push({k:"platoon",v:pl,t:`${PITCH[p.t].name} ${pl>0?"plays up":"plays down"} against a ${same?"same-side":"opposite-side"} hitter`});
+  const hr=H.rv&&H.rv[p.t];
+  if(hr){
+    const sh=Math.min(1,hr.pa/60);
+    const v=clamp(-hr.rv*1.6+(0.330-hr.xw)*40,-14,14)*sh;
+    parts.push({k:"hitter",v,t:`${H.name.split(" ").slice(-1)[0]} vs ${PITCH[p.t].name.toLowerCase()}s: ${f3(hr.slg)} SLG, ${f3(hr.xw)} xwOBA, ${hr.wh.toFixed(1)}% whiff, ${hr.rv>0?"+":""}${hr.rv} run value (${hr.pa} PA)`});
+  }
+  const cls=PITCH[p.t].cls; const L=H.l;
+  let d=0, dt=[];
+  if(p.t!=="FF"&&p.t!=="SI"&&p.t!=="FC"){ const c=(L.chase-30.5)*0.5; d+=c; if(Math.abs(c)>=2) dt.push(`${L.chase.toFixed(1)}% chase rate ${c>0?"rewards":"limits"} pitches that start in the zone and finish out of it`); d+=(L.whiff-25)*0.3; }
+  if(p.t==="FF"){
+    d+=-(L.zcon-84)*0.4; if(L.zcon>=88) dt.push(`${L.zcon.toFixed(1)}% zone contact: he puts fastballs in the zone in play`);
+    if(p.up&&p.ivb>=15){ const up=(L.la>=17||(H.bat&&H.bat.attack>=10))?4:0; const flat=(H.bat&&H.bat.attack<=7)?-3:0; d+=up+flat+(L.whiff-25)*0.3;
+      if(up) dt.push(`Lift-heavy swing (${L.la.toFixed(1)}° avg launch angle) tends to get under high ride`);
+      if(flat) dt.push(`Flat swing path (${H.bat.attack}° attack angle) covers the belt but struggles to reach elevated ride`);
+    }
+  }
+  if(cls==="FB"){ const b=-(L.barrel-8)*0.5; d+=b; if(L.barrel>=12) dt.push(`${L.barrel.toFixed(1)}% barrel rate punishes fastball mistakes`); }
+  if(d) parts.push({k:"profile",v:d,t:dt.join("; ")||"Plate-discipline profile"});
+  const key=`${P.id}|${H.id}`; const ov=((NOTES[key]&&NOTES[key].ov)||{})[p.t]||0; const fa=(FLAGS_ADJ[H.id]&&FLAGS_ADJ[H.id][p.t])||0;
+  if(ov+fa) parts.push({k:"judgment",v:ov+fa,t:H.id==="freeman"?"Health flag: knee has sapped his power, so challenge with velocity":"Head-to-head history"});
+  const total=parts.reduce((a,b)=>a+b.v,0);
+  return {t:p.t,p,total,parts};
+}
+function locTemplate(t,p){
+  /* pitcher-relative columns: [arm-off, arm-edge, middle, glove-edge, glove-off]; rows top->bottom, rows 1-3 = zone */
+  const T={
+   FFup:[[.2,.7,.9,.7,.2],[.15,.6,.45,.6,.15],[0,.15,0,.15,0],[0,0,0,0,0],[0,0,0,0,0]],
+   FFedge:[[0,.2,.1,.2,0],[.1,.6,.1,.5,.1],[.2,.6,0,.5,.2],[0,.3,0,.3,0],[0,0,0,0,0]],
+   SI:[[0,0,0,0,0],[0,.2,0,0,0],[.2,.5,.1,0,0],[.4,.8,.3,0,0],[.2,.5,.2,0,0]],
+   FC:[[0,0,.1,.3,.1],[0,0,.2,.7,.3],[0,0,.1,.7,.3],[0,0,0,.4,.2],[0,0,0,0,0]],
+   SL:[[0,0,0,0,0],[0,0,0,.1,0],[0,0,.1,.4,.3],[0,.1,.3,.7,.7],[0,.1,.4,.7,.9]],
+   CU:[[0,0,0,0,0],[0,0,0,0,0],[0,0,.1,.1,0],[.1,.3,.6,.4,.2],[.2,.5,.9,.6,.3]],
+   OS:[[0,0,0,0,0],[0,0,0,0,0],[.1,.2,.1,0,0],[.4,.7,.5,.1,0],[.5,.8,.8,.2,0]]
+  };
+  if(t==="FF") return (p.up?T.FFup:T.FFedge);
+  if(t==="CH"||t==="FS") return T.OS;
+  return T[t];
+}
+/* Convert pitcher-relative template to catcher-view grid for this hitter */
+function toCatcher(tpl,same,stance){
+  const out=[...Array(5)].map(()=>Array(5).fill(0));
+  for(let r=0;r<5;r++)for(let c=0;c<5;c++){
+    const k = same? c : 4-c;          /* hitter-relative: 0 in-off .. 4 away-off */
+    const cc = stance==="R"? k : 4-k;  /* RHH stands on catcher's left */
+    out[r][cc]=tpl[r][c];
+  }
+  return out;
+}
+function locWords(t,p,same){
+  if(t==="FF") return p.up?"Top rail of the zone and just above":"Edges at the belt";
+  if(t==="SI") return same?"In on the hands, knees to belt":"Away at the knees";
+  if(t==="FC") return same?"Away edge, belt high":"In on the hands";
+  if(t==="SL") return same?"Down and away, finishing off the plate":"Back foot, down and in";
+  if(t==="CU") return "Below the knees, middle to away";
+  return same?"Down and in, below the zone":"Down and away, fading off the plate";
+}
+function analyze(P,H){
+  const stance=stanceOf(H,P), same=stance===P.hand;
+  const scored=P.ars.map(p=>pitchScore(P,p,H,same));
+  const sw=scored.map(s=>s.p.use*Math.exp(s.total/18)); const sum=sw.reduce((a,b)=>a+b,0);
+  scored.forEach((s,i)=>{ s.rec=Math.round((0.5*s.p.use+0.5*sw[i]/sum*100)*10)/10; });
+  const avg=scored.reduce((a,s)=>a+s.rec/100*s.total,0);
+  const pOps=P.splits[stance]; const pBase=(0.640-pOps)*160;
+  const hBase=(0.318-H.l.xw)*300;
+  let plat=0, platTxt="";
+  if(H.split){ plat=(ops(H)-H.split[P.hand])*120; platTxt=`${H.name} has a ${H.split[P.hand].toFixed(3).replace(/^0/,"")} OPS vs ${P.hand}HP (${ops(H).toFixed(3).replace(/^0/,"")} overall)`; }
+  else if(H.splitAvg){ plat=(H.l.avg-H.splitAvg[P.hand])*250; platTxt=`${H.name} hit ${H.splitAvg[P.hand].toFixed(3).replace(/^0/,"")} vs ${P.hand}HP (${H.l.avg.toFixed(3).replace(/^0/,"")} overall)`; }
+  const edge=Math.round(clamp(avg*0.9+pBase+hBase+plat,-100,100));
+  let conf=3; const why=[];
+  if(H.depth!=="full"){conf--; why.push("no pitch-type split for this hitter");}
+  if(parseFloat(P.line.ip)<60){conf--; why.push(`${P.line.ip} IP sample for ${P.name.split(" ").pop()}`);}
+  if(H.l.pa<350){conf--; why.push(`${H.l.pa} PA sample for ${H.name.split(" ").pop()}`);}
+  const confL=conf>=3?"High":conf===2?"Medium":"Low";
+  const ranked=[...scored].sort((a,b)=>b.total-a.total);
+  const ahead=[...scored].sort((a,b)=>(b.total+(PITCH[b.t].cls==="FB"?12:0)+b.p.use*0.05)-(a.total+(PITCH[a.t].cls==="FB"?12:0)+a.p.use*0.05))[0];
+  const kOpts=scored.filter(s=>s!==ahead||scored.length===1);
+  const putaway=[...kOpts].sort((a,b)=>(b.total+b.p.wh*0.3)-(a.total+a.p.wh*0.3))[0]||ahead;
+  const avoid=ranked.filter(s=>s.total<-6).slice(-2).reverse();
+  const avoidFinal=avoid.length?avoid:[ranked[ranked.length-1]];
+  /* heat */
+  const heat=[...Array(5)].map(()=>Array(5).fill(0));
+  scored.forEach(s=>{ const w=s.rec/100*clamp((s.total+15)/40,0,1.2); const g=toCatcher(locTemplate(s.t,s.p),same,stance); for(let r=0;r<5;r++)for(let c=0;c<5;c++)heat[r][c]+=w*g[r][c]; });
+  const mx=Math.max(...heat.flat())||1; for(let r=0;r<5;r++)for(let c=0;c<5;c++)heat[r][c]/=mx;
+  const danger=[[2,2]]; const L=H.l; const hk=k=>stance==="R"?k:4-k;
+  if(L.pull>=45) danger.push([2,hk(1)]);
+  if((L.barrel>=12||L.hh>=50)&&L.la>=15) danger.push([1,2]);
+  if(L.barrel>=10&&L.la<=12.5) danger.push([3,2]);
+  const spots=[ahead,putaway].filter((v,i,a)=>a.indexOf(v)===i).map(s=>{ const g=toCatcher(locTemplate(s.t,s.p),same,stance); let wr=0,wc=0,ws=0; for(let r=0;r<5;r++)for(let c=0;c<5;c++){const w=Math.pow(g[r][c],3); wr+=r*w; wc+=c*w; ws+=w;} return {t:s.t,r:wr/ws,c:wc/ws}; });
+  let count;
+  if(L.fp>=39) count=`He swings early (${L.fp.toFixed(1)}% first-pitch swing). Start with something that moves off the zone instead of a get-me-over strike.`;
+  else if(L.zsw<62||L.fp<24) count=`He takes early strikes (${L.fp.toFixed(1)}% first-pitch swing, ${L.zsw.toFixed(1)}% zone swing). Steal strike one in the zone.`;
+  else if(L.chase>=36) count=`He expands (${L.chase.toFixed(1)}% chase). Once ahead, nothing he can drive needs to be in the zone.`;
+  else count=`Average early aggression (${L.fp.toFixed(1)}% first-pitch swing). Win strike one, then expand.`;
+  const notes=(NOTES[`${P.id}|${H.id}`]||{}).notes||[];
+  return {P,H,stance,same,scored,ranked,avg,pBase,hBase,plat,platTxt,edge,confL,why,ahead,putaway,avoid:avoidFinal,heat,danger,spots,count,notes,pOps};
+}
+function edgeInfo(e){
+  if(e>=30) return {l:"Clear pitcher edge",c:"e-p2"};
+  if(e>=12) return {l:"Lean pitcher",c:"e-p1"};
+  if(e>-12) return {l:"Coin flip",c:"e-0"};
+  if(e>-30) return {l:"Lean hitter",c:"e-h1"};
+  return {l:"Clear hitter edge",c:"e-h2"};
+}
+
+/* ===================== SVG BUILDERS ===================== */
+function zoneSVG(A){
+  const cs=46, x0=58, y0=24, W=x0*2+cs*5, Hh=y0+cs*5+40;
+  const css=getComputedStyle(document.documentElement);
+  const att=css.getPropertyValue("--attack").trim()||"#0B7A64";
+  let s=`<svg viewBox="0 0 ${W} ${Hh}" role="img" aria-label="Attack map for ${esc(A.P.name)} against ${esc(A.H.name)}, catcher's view"><defs><pattern id="hatch" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="7" stroke="var(--danger)" stroke-width="2.4"/></pattern></defs>`;
+  for(let r=0;r<5;r++)for(let c=0;c<5;c++){
+    const v=A.heat[r][c]; const x=x0+c*cs, y=y0+r*cs;
+    s+=`<rect x="${x+1}" y="${y+1}" width="${cs-2}" height="${cs-2}" rx="3" fill="${att}" fill-opacity="${(0.06+v*0.84).toFixed(2)}"/>`;
+  }
+  A.danger.forEach(([r,c])=>{ const x=x0+c*cs,y=y0+r*cs; s+=`<rect x="${x+2}" y="${y+2}" width="${cs-4}" height="${cs-4}" rx="3" fill="url(#hatch)" fill-opacity=".55" stroke="var(--danger)" stroke-width="2"/>`; });
+  s+=`<rect x="${x0+cs}" y="${y0+cs}" width="${cs*3}" height="${cs*3}" fill="none" stroke="var(--ink)" stroke-width="2.5"/>`;
+  const bx = A.stance==="R"? 6 : W-46;
+  s+=`<rect x="${bx}" y="${y0+cs*0.6}" width="40" height="${cs*3.8}" rx="4" fill="none" stroke="var(--ink-3)" stroke-dasharray="4 4"/>`;
+  s+=`<text x="${bx+20}" y="${y0+cs*2.6}" text-anchor="middle" font-size="13" font-weight="700" fill="var(--ink-2)">${A.stance}HH</text>`;
+  const plateY=y0+cs*5+14, px=x0+cs, pw=cs*3;
+  s+=`<path d="M${px} ${plateY} h${pw} v8 l-${pw/2} 10 l-${pw/2} -10 z" fill="var(--panel-2)" stroke="var(--ink-3)"/>`;
+  A.spots.forEach((sp,i)=>{ const cx=x0+sp.c*cs+cs/2, cy=y0+sp.r*cs+cs/2; s+=`<circle cx="${cx}" cy="${cy}" r="15" fill="${PITCH[sp.t].color}" stroke="var(--panel)" stroke-width="3"/><text x="${cx}" y="${cy+4.5}" text-anchor="middle" font-size="12" font-weight="700" fill="${inkOn(PITCH[sp.t].color)}">${sp.t}</text>`; });
+  return s+"</svg>";
+}
+function movementSVG(P,highlight){
+  const W=360,H=300,pad=34, xr=[-20,22], yr=[-20,22];
+  const X=v=>pad+(v-xr[0])/(xr[1]-xr[0])*(W-pad*2), Y=v=>H-pad-(v-yr[0])/(yr[1]-yr[0])*(H-pad*2);
+  let s=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Pitch movement chart for ${esc(P.name)}">`;
+  s+=`<line x1="${X(xr[0])}" y1="${Y(0)}" x2="${X(xr[1])}" y2="${Y(0)}" stroke="var(--line)"/><line x1="${X(0)}" y1="${Y(yr[0])}" x2="${X(0)}" y2="${Y(yr[1])}" stroke="var(--line)"/>`;
+  [-15,-10,-5,5,10,15,20].forEach(v=>{ s+=`<text x="${X(v)}" y="${Y(0)+13}" font-size="10" text-anchor="middle" fill="var(--ink-3)">${Math.abs(v)}</text>`; s+=`<text x="${X(0)-5}" y="${Y(v)+3}" font-size="10" text-anchor="end" fill="var(--ink-3)">${v}</text>`; });
+  s+=`<text x="${X(xr[1])}" y="${H-8}" font-size="11.5" text-anchor="end" fill="var(--ink-2)">Arm side (in.)</text><text x="${X(xr[0])}" y="${H-8}" font-size="11.5" fill="var(--ink-2)">Glove side (in.)</text><text x="${X(0)+6}" y="${pad-12}" font-size="11.5" fill="var(--ink-2)">Induced vertical break (in.)</text>`;
+  const ff=P.ars.find(a=>a.t==="FF")||P.ars[0];
+  P.ars.forEach(a=>{ if(a===ff||!highlight||!highlight.includes(a.t)) return; s+=`<line x1="${X(ff.hb)}" y1="${Y(ff.ivb)}" x2="${X(a.hb)}" y2="${Y(a.ivb)}" stroke="var(--ink-3)" stroke-dasharray="3 3"/>`; });
+  P.ars.forEach(a=>{ const r=6+a.use*0.22; const hl=highlight&&highlight.includes(a.t); s+=`<circle cx="${X(a.hb)}" cy="${Y(a.ivb)}" r="${r}" fill="${PITCH[a.t].color}" fill-opacity=".85" stroke="${hl?"var(--ink)":"var(--panel)"}" stroke-width="${hl?3:1.5}"/><text x="${X(a.hb)+r+4}" y="${Y(a.ivb)+4}" font-size="12" font-weight="700" fill="var(--ink)">${a.t} ${a.mph.toFixed(1)}</text>`; });
+  return s+"</svg>";
+}
+function edgeSVG(e){
+  const W=300,H=46,x=10+(e+100)/200*(W-20);
+  return `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Edge score ${e} on a scale from minus 100 hitter to plus 100 pitcher">
+  <defs><linearGradient id="eg" x1="0" x2="1"><stop offset="0" stop-color="var(--danger)"/><stop offset=".5" stop-color="var(--line)"/><stop offset="1" stop-color="var(--attack)"/></linearGradient></defs>
+  <rect x="10" y="16" width="${W-20}" height="10" rx="5" fill="url(#eg)"/>
+  <line x1="${W/2}" y1="12" x2="${W/2}" y2="30" stroke="var(--ink-3)"/>
+  <circle cx="${x}" cy="21" r="9" fill="var(--panel)" stroke="var(--ink)" stroke-width="3"/>
+  <text x="10" y="44" font-size="11.5" fill="var(--ink-2)">Hitter</text><text x="${W-10}" y="44" font-size="11.5" text-anchor="end" fill="var(--ink-2)">Pitcher</text></svg>`;
+}
+function scoreBar(v){ const w=clamp(Math.abs(v)/30,0,1)*45; const col=v>=0?"var(--attack)":"var(--danger)"; return `<span class="scorebar" role="img" aria-label="Matchup score ${v.toFixed(0)}"><b></b><i style="${v>=0?`left:50%`:`right:50%`};width:${w}%;background:${col}"></i></span>`; }
+
+/* ===================== LAB RENDER ===================== */
+const state={pid:"sale",hid:"ohtani"};
+function renderRotation(){
+  const g=t=>`<div class="rot-group"><h2><span class="team-dot" style="background:${TEAM[t].color}"></span>${TEAM[t].name} starters</h2><div class="rot-list">${PITCHERS.filter(p=>p.team===t).map(p=>`<button class="pbtn" style="--tc:${TEAM[t].color}" aria-pressed="${p.id===state.pid}" data-pid="${p.id}"><span class="n">${esc(p.name.split(" ").slice(-1)[0])}</span><span class="s">${p.hand}HP, ${p.line.era.toFixed(2)} ERA, ${p.line.xera.toFixed(2)} xERA</span></button>`).join("")}</div></div>`;
+  $("#rotation").innerHTML=g("ATL")+g("LAD");
+  $("#rotation").querySelectorAll(".pbtn").forEach(b=>b.onclick=()=>{ selectPitcher(b.dataset.pid); });
+}
+function selectPitcher(pid){
+  const P=byId(pid); state.pid=pid;
+  const H=byId(state.hid);
+  if(!H||H.team===P.team){ state.hid=ORDER[opp(P.team)][P.hand][0]; }
+  renderAll();
+}
+function renderLineup(){
+  const P=byId(state.pid), t=opp(P.team); const ids=ORDER[t][P.hand];
+  const items=ids.map((id,i)=>{ const H=byId(id); const A=analyze(P,H); const ei=edgeInfo(A.edge);
+    return `<li><button class="hbtn" aria-pressed="${id===state.hid}" data-hid="${id}"><span class="slot">${i+1}</span><span class="nm">${esc(H.name)}<small>${H.pos}, bats ${H.bats==="S"?"both":H.bats}</small></span><span class="chip ${ei.c}" title="${ei.l} (${A.edge>0?"+":""}${A.edge})">${A.edge>0?"+":""}${A.edge}</span></button></li>`; }).join("");
+  $("#lineup").innerHTML=`<h2>${TEAM[t].name} lineup</h2><p class="sub">Projected order vs ${P.hand}HP. Number = edge for ${esc(P.name.split(" ").pop())} (+ favors pitcher).</p><ol>${items}</ol>
+  <p class="legend">Read the column top to bottom to see where this lineup is most dangerous for him. Orders are projections from published lineups; ${t==="LAD"?"LA platoons Ohtani and Betts at leadoff by pitcher hand.":"Atlanta's vs-LHP order is assumed to match its vs-RHP order."}</p>`;
+  $("#lineup").querySelectorAll(".hbtn").forEach(b=>b.onclick=()=>{ state.hid=b.dataset.hid; renderAll(); });
+}
+function renderSheet(){
+  const P=byId(state.pid), H=byId(state.hid); const A=analyze(P,H); const ei=edgeInfo(A.edge);
+  const pc=TEAM[P.team].color, hc=TEAM[H.team].color;
+  const tags=[`${P.hand}HP vs ${A.stance}HB${H.bats==="S"?" (switch)":""}`,`${P.name.split(" ").pop()} allows ${A.pOps.toFixed(3).replace(/^0/,"")} OPS to ${A.stance}HB`,`${H.name.split(" ").pop()}: ${H.l.xw.toFixed(3).replace(/^0/,"")} xwOBA`];
+  const flags=[P.id==="sale"?"Workload: short turnaround after Oct 1 relief outing":null,P.id==="snell"?"Small sample: 42.2 IP":null,H.flag||null].filter(Boolean);
+  const dot=t=>`<span class="pdot" style="background:${PITCH[t].color}"></span>`;
+  const reason=s=>{ const top=[...s.parts].sort((a,b)=>Math.abs(b.v)-Math.abs(a.v))[0]; return top?top.t:""; };
+  const avoidTxt=A.avoid.map(s=>PITCH[s.t].name).join(" and ");
+  const avoidWhy=A.avoid[0].total<-6? reason(A.avoid[0]) : "No pitch grades as a true avoid here. This is simply his lowest-rated option.";
+  const rows=[...A.scored].sort((a,b)=>b.p.use-a.p.use).map(s=>{ const hr=H.rv&&H.rv[s.t];
+    return `<tr><td class="pc">${dot(s.t)}${PITCH[s.t].name}</td><td>${s.p.use.toFixed(1)}%</td><td>${s.p.mph.toFixed(1)}</td><td>${f3(s.p.xw)}</td><td>${s.p.wh.toFixed(1)}%</td><td>${hr?`${f3(hr.slg)} SLG <span class="na">(${hr.pa})</span>`:`<span class="na">not split</span>`}</td><td>${scoreBar(s.total)} <span class="na">${s.total>0?"+":""}${s.total.toFixed(0)}</span></td></tr>`; }).join("");
+  const ff=P.ars.find(a=>a.t==="FF")||P.ars[0];
+  const sep=P.ars.filter(a=>a!==ff).map(a=>{ const dv=ff.ivb-a.ivb, dh=ff.hb-a.hb, dist=Math.hypot(dv,dh); return {a,dv,dh,dist,dm:ff.mph-a.mph}; }).sort((x,y)=>y.dist-x.dist);
+  const sepTxt=sep.slice(0,3).map(o=>`<li>${dot(o.a.t)} ${PITCH[o.a.t].name}: ${Math.abs(o.dv).toFixed(1)}" vertical and ${Math.abs(o.dh).toFixed(1)}" horizontal off the four-seam, ${o.dm.toFixed(1)} mph slower</li>`).join("");
+  const mix=[...A.scored].sort((a,b)=>b.rec-a.rec).map(s=>`<div class="mix-row"><span>${dot(s.t)} ${PITCH[s.t].name}</span><div class="mix-bars"><span style="width:${s.p.use}%;background:var(--line)" title="Season usage ${s.p.use}%"></span><span style="width:${s.rec}%;background:${PITCH[s.t].color}" title="Recommended ${s.rec}%"></span></div><span class="mix-n">${s.p.use.toFixed(0)}% now<br><b>${s.rec.toFixed(0)}% here</b></span></div>`).join("");
+  const ev=[];
+  ev.push(`<b>Get ahead with the ${PITCH[A.ahead.t].name.toLowerCase()}.</b> ${reason(A.ahead)}.`);
+  if(A.putaway!==A.ahead) ev.push(`<b>Finish with the ${PITCH[A.putaway.t].name.toLowerCase()}.</b> ${A.putaway.parts.map(p=>p.t).slice(0,2).join(". ")}.`);
+  if(A.avoid[0].total<-6) ev.push(`<b>Stay off the ${PITCH[A.avoid[0].t].name.toLowerCase()}.</b> ${A.avoid[0].parts.filter(p=>p.v<0).map(p=>p.t).join(". ")||reason(A.avoid[0])}.`);
+  ev.push(`<b>Handedness.</b> ${P.name.split(" ").pop()} allows a ${A.pOps.toFixed(3).replace(/^0/,"")} OPS to ${A.stance==="L"?"left":"right"}-handed hitters (${P.splits[A.stance==="L"?"R":"L"].toFixed(3).replace(/^0/,"")} to the other side).${A.platTxt?` ${A.platTxt}.`:""}`);
+  A.notes.forEach(n=>ev.push(`<b>History.</b> ${esc(n)}`));
+  P.vsOpp.filter(()=>A.notes.length===0).slice(0,1).forEach(n=>ev.push(`<b>Recent look.</b> ${esc(n)}`));
+  $("#sheet").innerHTML=`
+   <header class="sheet-head" style="--pc:${pc};--hc:${hc}">
+     <div><div class="duel"><span class="pn">${esc(P.name)}</span><span class="vs">vs</span><span class="hn">${esc(H.name)}</span></div>
+       <div class="meta-row">${tags.map(t=>`<span class="tag">${esc(t)}</span>`).join("")}${flags.map(f=>`<span class="tag warn">${esc(f)}</span>`).join("")}</div></div>
+     <div class="edge-box"><div class="edge-label">${ei.l} <span class="na" style="font-size:18px">(${A.edge>0?"+":""}${A.edge})</span></div>
+       ${edgeSVG(A.edge)}
+       <div class="edge-sub"><span class="conf">${A.confL} confidence</span>${A.why.length?`: ${A.why.join(", ")}`:": full pitch-type data on both sides"}</div>
+       <div style="margin-top:8px"><button class="flip" id="flipbtn">Flip to ${TEAM[H.team].name} pitching</button></div></div>
+   </header>
+   <section class="plan" aria-label="Game plan">
+     <div class="plan-item"><h3>Get ahead</h3><div class="pitch">${dot(A.ahead.t)}${PITCH[A.ahead.t].name}</div><p>${locWords(A.ahead.t,A.ahead.p,A.same)}.</p></div>
+     <div class="plan-item"><h3>Put him away</h3><div class="pitch">${dot(A.putaway.t)}${PITCH[A.putaway.t].name}</div><p>${locWords(A.putaway.t,A.putaway.p,A.same)}. ${A.putaway.p.wh.toFixed(0)}% season whiff rate.</p></div>
+     <div class="plan-item"><h3>Stay off</h3><div class="pitch">${A.avoid.map(s=>dot(s.t)).join("")}${avoidTxt}</div><p>${A.avoid[0].total<-6?"Grades below neutral for this hitter.":esc(avoidWhy)}</p></div>
+     <div class="plan-item"><h3>Count plan</h3><p style="margin-top:0;color:var(--ink)">${esc(A.count)}</p></div>
+   </section>
+   <div class="viz">
+     <figure><div class="fig-top"><h3>Attack map</h3><figcaption>Catcher's view. Darker green = where this plan sends pitches. Hatched red = his damage zones. Dots = target for the get-ahead and put-away pitches.</figcaption></div>
+       ${zoneSVG(A)}
+       <div class="legend-row"><span><span class="sw" style="background:var(--attack)"></span>Attack here</span><span><span class="sw" style="background:repeating-linear-gradient(45deg,var(--danger) 0 2px,transparent 2px 6px);border-color:var(--danger)"></span>Damage zone</span></div>
+       <p class="cap" style="margin-top:6px">Model-derived from pitch movement, pitch-type results and his swing profile. It is not observed pitch-location data.</p></figure>
+     <figure><div class="fig-top"><h3>Pitch by pitch</h3><figcaption>His season results on each pitch, the hitter's results against that pitch type, and the combined matchup score.</figcaption></div>
+       <div class="tablewrap"><table><thead><tr><th>Pitch</th><th>Use</th><th>Mph</th><th>xwOBA</th><th>Whiff</th><th>Hitter vs it</th><th>Matchup</th></tr></thead><tbody>${rows}</tbody></table></div>
+       <h3 style="margin-top:16px;font-size:17px">Recommended mix</h3><p class="cap">Grey = season usage. Color = suggested usage for this hitter (blended halfway toward the scores so it stays realistic).</p>${mix}</figure>
+   </div>
+   <div class="viz2">
+     <figure><div class="fig-top"><h3>Movement and separation</h3><figcaption>Bubble size = usage. Outlined pitches are in this plan. Dashed lines show separation from the four-seam.</figcaption></div>
+       ${movementSVG(P,[A.ahead.t,A.putaway.t])}</figure>
+     <figure><div class="fig-top"><h3>Tunneling proxy</h3><figcaption>Movement and speed gaps off the primary fastball. Bigger gaps from a shared look are harder to track. Release-point consistency was not measured, so this is a proxy, not true tunneling.</figcaption></div>
+       <ul class="says">${sepTxt}</ul>
+       <p class="cap" style="margin-top:10px">Active spin on the four-seam: ${ff.spin}%. Values near 100% mean nearly all spin becomes movement.</p></figure>
+   </div>
+   <section class="why"><h3>Why this plan</h3><ul>${ev.map(e=>`<li>${e}</li>`).join("")}</ul>
+     <p class="src" style="margin-top:8px">Sources: <a href="${P.src}" target="_blank" rel="noopener">${esc(P.name)} on Baseball Savant</a>, <a href="${H.src}" target="_blank" rel="noopener">${esc(H.name)} on Baseball Savant</a>.</p></section>`;
+  $("#flipbtn").onclick=()=>{ const t=H.team; const np=PITCHERS.find(p=>p.team===t); state.pid=np.id; state.hid=ORDER[P.team][np.hand][0]; renderAll(); };
+  const sh=$("#sheet"); sh.classList.remove("swap"); void sh.offsetWidth; sh.classList.add("swap");
+}
+function renderAll(){ renderRotation(); renderLineup(); renderSheet(); try{history.replaceState(null,"",`#p=${state.pid}&h=${state.hid}`);}catch(e){} }
+
+/* ===================== BATTLE CARDS ===================== */
+const filt={team:"all",role:"all"};
+function cardsList(){ return [...PITCHERS.map(p=>({...p,role:"P"})),...HITTERS.map(h=>({...h,role:"H"}))].filter(x=>(filt.team==="all"||x.team===filt.team)&&(filt.role==="all"||x.role===filt.role)); }
+function renderCards(){
+  const list=cardsList();
+  $("#count").textContent=`${list.length} ${list.length===1?"player":"players"}`;
+  $("#cardgrid").innerHTML=list.map(x=>{
+    const kv = x.role==="P"
+      ? [["ERA",x.line.era.toFixed(2)],["xERA",x.line.xera.toFixed(2)],["K%",x.line.k.toFixed(1)]]
+      : [["OPS",ops(x).toFixed(3).replace(/^0/,"")],["xwOBA",x.l.xw.toFixed(3).replace(/^0/,"")],["Barrel",x.l.barrel.toFixed(1)+"%"]];
+    const sub = x.role==="P" ? `${x.hand}HP` : `${x.pos}, bats ${x.bats==="S"?"both":x.bats}`;
+    return `<button class="card" style="--tc:${TEAM[x.team].color}" data-id="${x.id}" aria-label="Open battle card for ${esc(x.name)}"><span class="band"></span><span class="body"><span class="who"><b>${esc(x.name)}</b><span>${sub}</span></span><span class="hook">${esc(x.hook)}</span><span class="kv">${kv.map(([k,v])=>`<div><small>${k}</small><strong>${v}</strong></div>`).join("")}</span></span></button>`;
+  }).join("");
+  $("#cardgrid").querySelectorAll(".card").forEach(c=>c.onclick=()=>openDetail(c.dataset.id));
+}
+function barRow(label,val,avg,max,fmt,goodHigh){
+  const w=clamp(val/max*100,0,100), m=clamp(avg/max*100,0,100);
+  const good = goodHigh? val>=avg : val<=avg;
+  return `<div class="bar-row"><span>${label}</span><span class="track" role="img" aria-label="${label} ${fmt(val)}, MLB average ${fmt(avg)}"><i style="width:${w}%;background:${good?"var(--attack)":"var(--danger)"};opacity:.8"></i><b style="left:${m}%"></b></span><span class="v">${fmt(val)}</span></div>`;
+}
+function openDetail(id){
+  const x=byId(id); const isP=!!x.ars; const d=$("#dlg");
+  let body="";
+  if(isP){
+    const pctRows=x.pct.map(([k,v])=>barRow(k,v,50,100,v=>v+"th",true)).join("") || `<p class="cap">Not enough innings to qualify for percentile rankings.</p>`;
+    const ars=x.ars.map(a=>`<tr><td class="pc"><span class="pdot" style="background:${PITCH[a.t].color}"></span>${PITCH[a.t].name}</td><td>${a.use.toFixed(1)}%</td><td>${a.mph.toFixed(1)}</td><td>${a.ivb.toFixed(1)}</td><td>${Math.abs(a.hb).toFixed(1)} ${a.hb>=0?"arm":"glove"}</td><td>${a.spin}%</td><td>${f3(a.xw)}</td><td>${a.wh.toFixed(1)}%</td><td>${a.rv>0?"+":""}${a.rv}</td></tr>`).join("");
+    const lineupIds=ORDER[opp(x.team)][x.hand];
+    const vs=lineupIds.map((hid,i)=>{const H=byId(hid);const A=analyze(x,H);const ei=edgeInfo(A.edge);return `<tr><td>${i+1}. ${esc(H.name)}</td><td><span class="chip ${ei.c}">${A.edge>0?"+":""}${A.edge}</span></td><td>${PITCH[A.putaway.t].name}</td><td><button class="btn" data-open="${x.id}|${hid}">Open matchup</button></td></tr>`;}).join("");
+    body=`<div class="stats">${[["ERA",x.line.era.toFixed(2)],["xERA",x.line.xera.toFixed(2)],["IP",x.line.ip],["K%",x.line.k.toFixed(1)],["BB%",x.line.bb.toFixed(1)],["Whiff%",x.line.whiff.toFixed(1)],["Chase%",x.line.chase.toFixed(1)],["Hard-hit%",x.line.hh.toFixed(1)],["vs LHB OPS",x.splits.L.toFixed(3).replace(/^0/,"")],["vs RHB OPS",x.splits.R.toFixed(3).replace(/^0/,"")]].map(([k,v])=>`<div class="stat"><small>${k}</small><strong>${v}</strong></div>`).join("")}</div>
+     <div class="two"><div><h3 style="font-size:21px;margin-bottom:6px">What the data says</h3><ul class="says">${x.says.map(s=>`<li>${esc(s)}</li>`).join("")}</ul>
+       <h3 style="font-size:19px;margin:14px 0 6px">Against this opponent</h3><ul class="says">${x.vsOpp.map(s=>`<li>${esc(s)}</li>`).join("")}</ul></div>
+       <figure><h3>Movement profile</h3>${movementSVG(x,null)}</figure></div>
+     <figure><h3>Arsenal</h3><div class="tablewrap"><table><thead><tr><th>Pitch</th><th>Use</th><th>Mph</th><th>Rise (IVB)</th><th>Run</th><th>Active spin</th><th>xwOBA</th><th>Whiff</th><th>Run value</th></tr></thead><tbody>${ars}</tbody></table></div></figure>
+     <div class="two"><figure><h3>Percentile ranks</h3><p class="cap">Marker = league median. Green = better than median.</p>${pctRows}</figure>
+       <figure><h3>Against the ${TEAM[opp(x.team)].name} lineup</h3><p class="cap">Edge from the matchup engine. + favors ${esc(x.name.split(" ").pop())}.</p><div class="tablewrap"><table><thead><tr><th>Hitter</th><th>Edge</th><th>Put-away</th><th></th></tr></thead><tbody>${vs}</tbody></table></div></figure></div>`;
+  } else {
+    const L=x.l;
+    const disc=[barRow("Chase%",L.chase,MLB.chase,60,v=>v.toFixed(1)+"%",false),barRow("Whiff%",L.whiff,MLB.whiff,45,v=>v.toFixed(1)+"%",false),barRow("Zone contact",L.zcon,MLB.zcon,100,v=>v.toFixed(1)+"%",true),barRow("Barrel%",L.barrel,MLB.barrel,20,v=>v.toFixed(1)+"%",true),barRow("Hard-hit%",L.hh,MLB.hh,65,v=>v.toFixed(1)+"%",true),barRow("K%",L.k,MLB.k,40,v=>v.toFixed(1)+"%",false),barRow("BB%",L.bb,MLB.bb,18,v=>v.toFixed(1)+"%",true)].join("");
+    const rv = x.rv ? Object.entries(x.rv).map(([t,o])=>{const w=clamp(Math.abs(o.rv)/10,0,1)*50; return `<div class="bar-row"><span><span class="pdot" style="background:${PITCH[t].color}"></span> ${PITCH[t].name}</span><span class="track"><b style="left:50%"></b><i style="${o.rv>=0?"left:50%":"right:50%;left:auto"};width:${w}%;background:${o.rv>=0?"var(--danger)":"var(--attack)"}"></i></span><span class="v">${o.rv>0?"+":""}${o.rv} (${f3(o.slg)} SLG)</span></div>`;}).join("") + `<p class="cap">Run value by pitch type. Red = he did damage. Green = pitchers won.</p>` : `<p class="cap">Pitch-type splits were not pulled for this hitter. The engine uses his plate-discipline and contact profile instead.</p>`;
+    const split = x.split ? `${barRow("OPS vs LHP",x.split.L,ops(x),1.2,v=>v.toFixed(3).replace(/^0/,""),true)}${barRow("OPS vs RHP",x.split.R,ops(x),1.2,v=>v.toFixed(3).replace(/^0/,""),true)}<p class="cap">Marker = his overall OPS.</p>` : x.splitAvg ? `${barRow("AVG vs LHP",x.splitAvg.L,x.l.avg,.4,v=>v.toFixed(3).replace(/^0/,""),true)}${barRow("AVG vs RHP",x.splitAvg.R,x.l.avg,.4,v=>v.toFixed(3).replace(/^0/,""),true)}<p class="cap">FanGraphs split through mid-September. Marker = his season average.</p>` : `<p class="cap">Platoon split not pulled for this hitter.</p>`;
+    const vsP=PITCHERS.filter(p=>p.team!==x.team).map(P=>{const A=analyze(P,x);const ei=edgeInfo(A.edge);return `<tr><td>${esc(P.name)}</td><td><span class="chip ${ei.c}">${A.edge>0?"+":""}${A.edge}</span></td><td>${PITCH[A.putaway.t].name}</td><td>${A.avoid[0].total<-6?PITCH[A.avoid[0].t].name:"–"}</td><td><button class="btn" data-open="${P.id}|${x.id}">Open matchup</button></td></tr>`;}).join("");
+    body=`<div class="stats">${[["AVG/OBP/SLG",`${L.avg.toFixed(3).replace(/^0/,"")}/${L.obp.toFixed(3).replace(/^0/,"")}/${L.slg.toFixed(3).replace(/^0/,"")}`],["HR",L.hr],["PA",L.pa],["xwOBA",L.xw.toFixed(3).replace(/^0/,"")],["Exit velo",L.ev.toFixed(1)],["Launch angle",L.la.toFixed(1)+"°"],["1st-pitch swing",L.fp.toFixed(1)+"%"],["Zone swing",L.zsw.toFixed(1)+"%"]].map(([k,v])=>`<div class="stat"><small>${k}</small><strong style="${k==="AVG/OBP/SLG"?"font-size:19px":""}">${v}</strong></div>`).join("")}</div>
+     <div class="two"><div><h3 style="font-size:21px;margin-bottom:6px">What the data says</h3><ul class="says">${x.says.map(s=>`<li>${esc(s)}</li>`).join("")}</ul>${x.flag?`<p class="tag warn" style="display:inline-block;margin-top:10px">${esc(x.flag)}</p>`:""}</div>
+       <figure><h3>Plate discipline and contact</h3><p class="cap">Marker = MLB average. Green = better than average for the hitter.</p>${disc}</figure></div>
+     <div class="two"><figure><h3>By pitch type</h3>${rv}</figure><figure><h3>Platoon</h3>${split}</figure></div>
+     <figure><h3>Against the ${TEAM[opp(x.team)].name} starters</h3><p class="cap">Edge from the matchup engine. + favors the pitcher.</p><div class="tablewrap"><table><thead><tr><th>Pitcher</th><th>Edge</th><th>Put-away</th><th>Stay off</th><th></th></tr></thead><tbody>${vsP}</tbody></table></div></figure>`;
+  }
+  const sub = isP ? `${TEAM[x.team].name}, ${handWord(x.hand)} starter` : `${TEAM[x.team].name}, ${x.pos}, bats ${x.bats==="S"?"both sides":x.bats==="L"?"left":"right"}`;
+  d.innerHTML=`<div class="dlg-head" style="border-top:6px solid ${TEAM[x.team].color}"><div><h2 id="dlg-title">${esc(x.name)}</h2><p class="sub">${sub}. <a href="${x.src}" target="_blank" rel="noopener">Source on Baseball Savant</a></p></div><div class="acts"><button class="btn primary" id="dlg-lab">Open in matchup lab</button><button class="btn" id="dlg-close" aria-label="Close battle card">Close</button></div></div><div class="dlg-body">${body}</div>`;
+  $("#dlg-close").onclick=()=>d.close();
+  $("#dlg-lab").onclick=()=>{ d.close(); if(isP){ selectPitcher(x.id);} else { const P=PITCHERS.find(p=>p.team!==x.team); state.pid=P.id; state.hid=x.id; renderAll(); } showTab("lab"); window.scrollTo({top:0}); };
+  d.querySelectorAll("[data-open]").forEach(b=>b.onclick=()=>{ const [pid,hid]=b.dataset.open.split("|"); state.pid=pid; state.hid=hid; d.close(); renderAll(); showTab("lab"); window.scrollTo({top:0}); });
+  d.showModal(); d.scrollTop=0;
+}
+$("#dlg").addEventListener("click",e=>{ if(e.target.id==="dlg") e.target.close(); });
+function segInit(id,key){ const el=$(id); el.querySelectorAll("button").forEach(b=>b.onclick=()=>{ el.querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed","false")); b.setAttribute("aria-pressed","true"); filt[key]=b.dataset.v; renderCards(); }); }
+
+/* ===================== METHOD ===================== */
+function renderMethod(){
+  $("#methodbody").innerHTML=`
+  <h2>How it works</h2>
+  <p>This is a single source of truth for any Braves or Dodgers starter against any projected hitter on the other side. It does not assume game-by-game pitching matchups. Pick a starter, then a hitter from the opposing lineup card, and the lab builds a plan from 2026 regular-season Statcast data.</p>
+  <h3>How a plan is built</h3>
+  <ol>
+    <li><b>Pitch quality.</b> Each pitch starts from its season results: expected wOBA allowed, whiff rate and run value per 100 pitches. Pitches with fewer than 40 PA are shrunk toward neutral.</li>
+    <li><b>Handedness.</b> Changeups and splitters get credit against opposite-side hitters (and a penalty against same-side hitters, since their season results come mostly from opposite-side matchups), sliders against same-side hitters, sinkers in on same-side hitters, cutters in on opposite-side hitters.</li>
+    <li><b>The hitter's results by pitch type.</b> Used where pulled (Ohtani, Olson, Harris). Weighted by sample size, capped so one split cannot dominate.</li>
+    <li><b>Swing profile.</b> Chase rate boosts pitches that finish out of the zone. Zone contact and barrel rate penalize fastballs in the zone. Launch angle and attack angle decide whether elevated ride helps or hurts.</li>
+    <li><b>Judgment adjustments.</b> Two, both labeled in the lab: a small four-seam bump for Sale vs Ohtani (head-to-head history) and for anyone facing Freeman (knee).</li>
+    <li><b>Edge score.</b> Combines the weighted pitch scores, the pitcher's OPS allowed to that hitter's side, the hitter's xwOBA, and the hitter's own platoon split where available. Range is -100 (hitter) to +100 (pitcher).</li>
+  </ol>
+  <div class="box"><h3 style="margin-top:0">What is observed and what is inferred</h3>
+  <ul>
+    <li><b>Observed:</b> every rate stat, pitch mix, velocity, movement, active spin, run value, platoon split and game line shown.</li>
+    <li><b>Inferred:</b> the attack map, the recommended mix, the edge score and the tunneling proxy. They come from the rules above, not from pitch-location tracking.</li>
+    <li><b>Not available in this build:</b> pitch-by-pitch location data (true heat maps), release points and arm angles (true tunneling), and hitter platoon or pitch-type splits for 14 of the 18 hitters.</li>
+  </ul></div>
+  <h3>Confidence</h3>
+  <p>Each matchup starts at high and drops one level for each of: no pitch-type split for the hitter, a pitcher sample under 60 IP (Snell), or a hitter sample under 350 PA (Will Smith, Dominic Smith, Edman).</p>
+  <h3>Known limits</h3>
+  <ul>
+    <li>Season numbers do not fully capture current health. Freeman (knee), Ohtani (post-IL), Snell (groin) and Sale (short rest) carry flags.</li>
+    <li>Head-to-head history is shown as context only. At these sample sizes it adds little predictive value.</li>
+    <li>Wild Card Series games are not included in the season data.</li>
+    <li>Projected lineups come from MLB.com's Game 1 preview. LA's vs-LHP order and Atlanta's vs-LHP order are assumptions.</li>
+  </ul>
+  <h3>Sources</h3>
+  <ul>
+    ${PITCHERS.map(p=>`<li><a href="${p.src}" target="_blank" rel="noopener">${esc(p.name)}, Baseball Savant</a></li>`).join("")}
+    <li><a href="https://baseballsavant.mlb.com/savant-player/shohei-ohtani-660271" target="_blank" rel="noopener">Shohei Ohtani, Baseball Savant</a></li>
+    <li><a href="https://baseballsavant.mlb.com/savant-player/matt-olson-621566" target="_blank" rel="noopener">Matt Olson, Baseball Savant</a></li>
+    <li><a href="https://baseballsavant.mlb.com/savant-player/michael-harris-ii-671739" target="_blank" rel="noopener">Michael Harris II, Baseball Savant</a></li>
+    <li><a href="https://baseballsavant.mlb.com/team/144" target="_blank" rel="noopener">Atlanta Braves team page, Baseball Savant</a> and <a href="https://baseballsavant.mlb.com/team/119" target="_blank" rel="noopener">Los Angeles Dodgers team page</a></li>
+    <li><a href="https://www.mlb.com/dodgers/news/braves-dodgers-nlds-position-by-position-breakdown" target="_blank" rel="noopener">MLB.com Braves-Dodgers NLDS position-by-position breakdown</a></li>
+    <li><a href="https://dodgerblue.com/start-times-nlds-games-at-dodger-stadium-braves-or-phillies/2026/09/30/" target="_blank" rel="noopener">Dodger Blue on the projected LA rotation</a></li>
+    <li>Projected lineups and Freeman's knee status come from MLB.com coverage gathered in the earlier research session. Those links were not re-checked for this build.</li>
+    <li><a href="https://www.fangraphs.com/players/drake-baldwin/31539/splits" target="_blank" rel="noopener">FanGraphs splits for Drake Baldwin</a></li>
+    <li><a href="https://www.statmuse.com/mlb/ask/ohtani-vs-chris-sale" target="_blank" rel="noopener">StatMuse: Ohtani vs Sale</a></li>
+  </ul>
+  <p class="cap" style="margin-top:16px">Data pulled Oct 2, 2026, covering the regular season through Sept 27.</p>`;
+}
+
+/* ===================== TABS & INIT ===================== */
+function showTab(name){
+  ["lab","cards","method"].forEach(n=>{ $("#"+n).hidden = n!==name; $("#t-"+n).setAttribute("aria-selected", n===name?"true":"false"); });
+}
+const tabBtns=[...document.querySelectorAll(".tabs button")];
+tabBtns.forEach((b,i)=>{ b.onclick=()=>showTab(b.id.slice(2)); b.onkeydown=e=>{ if(e.key==="ArrowRight"||e.key==="ArrowLeft"){ const n=tabBtns[(i+(e.key==="ArrowRight"?1:tabBtns.length-1))%tabBtns.length]; n.focus(); showTab(n.id.slice(2)); } }; });
+(function init(){
+  const m=location.hash.match(/p=([a-z]+)&h=([a-z]+)/);
+  if(m&&byId(m[1])&&byId(m[2])&&byId(m[1]).ars&&!byId(m[2]).ars&&byId(m[1]).team!==byId(m[2]).team){ state.pid=m[1]; state.hid=m[2]; }
+  segInit("#f-team","team"); segInit("#f-role","role");
+  renderAll(); renderCards(); renderMethod();
+})();
+</script>
+</body>
+</html>
